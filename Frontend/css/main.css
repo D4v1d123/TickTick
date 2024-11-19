@@ -1,0 +1,86 @@
+:root {
+    --gray-light: #e9ecef;
+    --gray-dark: #292d38;
+    --dark: #262626;
+    --blue: #007BFF;
+    --blue-hover: #0069d9;
+    --font-color-light: black;
+    --font-color-dark: white;
+    --border-color: #dee2e6;  
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+}
+
+h1, h3 {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.blue-button {
+    width: 100%;
+    border: none;
+    padding: 2.2%;
+    border-radius: var(--border-rounded);
+    background-color: var(--blue);
+    color: white;
+}
+
+.blue-button:hover {
+    transition: var(--transition-time);
+    background-color: var(--blue-hover);
+}
+
+.in-line {
+    display: flex;
+    justify-content: center;
+}
+
+.password-input {
+    display: flex;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.text-blue{
+    color: var(--blue);
+}
+
+.hover:hover {
+    transition: var(--transition-time);
+    color: var(--blue-hover);
+    text-decoration: underline;
+}
+
+.left-align {
+    display: block;
+    text-align: left;
+}
+
+.font {
+    font-weight: 200;
+    font-size: var(--text-size);
+}
+
+.font-title {
+    font-weight: bold;
+    font-size: var(--title-size);
+}
+
+.font-light {
+    font-weight: 200;
+    font-size: var(--text-size);
+}
+
+.font-bold {
+    font-weight: bold;
+    font-size: var(--text-size);
+}

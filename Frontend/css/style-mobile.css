@@ -1,0 +1,161 @@
+:root {
+    --border-rounded: 3vw;
+    --border-width: 0.9vw; 
+    --text-size: 2.2vh;
+    --title-size: 3.2vh;  
+}
+
+.container-logo {
+    position: fixed;
+    bottom: 76%;
+    width: 60%;
+    margin: 0 20%;
+}
+
+.logo {
+    width: 30%;
+    padding: 3%;
+    border-radius: 20vh;
+}
+
+.password-input > i {
+    position: absolute;
+    padding: 3%;
+    margin-bottom: 2.3vh;
+    transform: translateX(79vw); 
+}
+
+.wrong-message {
+    margin-top: -1vh;
+    margin-bottom: 1.5vh;
+    text-align: left;
+    color: var(--red);
+}
+
+.center-in-screen {
+    display: block;
+    text-align: center;
+    height: 100vh;
+}
+
+.container-signin {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 89.8%;
+    text-align: center;
+    border-radius: var(--border-rounded) var(--border-rounded) 0 0;
+}
+
+.input input {
+    display: block;
+    margin-bottom: 2.5vh;
+    padding: 3% 3% 3% 6%;
+    width: 100%;
+    border-style: solid;
+    border-width: 0.05vw;
+    border-radius: var(--border-rounded);
+    box-sizing: border-box; 
+    font-size: var(--text-size);
+}
+
+.left-align {
+    display: block;
+    text-align: left;
+}
+
+/* Light mode */
+@media (prefers-color-scheme: light) {
+    body {
+        color: var(--font-color-light);
+    }
+
+    input {
+        background-color: var(--gray-light);
+        border-color: white;
+        color: black;
+    }
+
+    .logo {
+        background-color: white;
+    }
+
+    .background {
+        background-color: var(--gray-light);
+    }
+
+    .theme {
+        background-color: white;
+    }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        color: var(--font-color-dark);
+    }
+
+    input {
+        background-color: var(--dark);
+        border-color: #dee2e6;
+        color: white;
+    }
+
+    .logo {
+        background-color: var(--dark);
+    }
+
+    .background {
+        background-color: var(--gray-dark);
+    }
+
+    .theme {
+        background-color: var(--dark);
+    }
+}
+
+/* Mobile responsive */
+@media (max-aspect-ratio: 1/1) {
+        .container-signin {
+            height: 63%;
+            padding: 14% 5% 0 5%;
+        }
+    
+        .input {
+            margin-bottom: 18%;
+        }
+        
+        .create-account {
+            margin-top: 18%;
+        }
+}
+
+@media (max-aspect-ratio: 9/16) {
+        .container-signin {
+            height: 65%;
+            padding: 14% 5% 0 5%;
+        }
+    
+        .input {
+            margin-bottom: 25%;
+        }
+        
+        .create-account {
+            margin-top: 25%;
+        }
+}
+
+@media (max-aspect-ratio: 9/18.5) {
+        .container-signin {
+            height: 65%;
+            padding: 18% 5% 0 5%;
+        }
+    
+        .input {
+            margin-bottom: 35%;
+        }
+        
+        .create-account {
+            margin-top: 43%;
+        }
+}

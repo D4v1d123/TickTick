@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/script.js" defer></script>
+    <script type="module" src="js/device-detect.js" defer></script>
+    <script type="module" src="js/language-detect.js" defer></script>
+
+    <!-- Google fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Boxicons (eye) -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="img/favicon.png" type="image/png">
+    <title id="bar-title">Log in to TickTick</title>
+</head>
+<body id="b_sign_in" class="font background">
+    <div id="main-container" class="center-in-screen" style="width: 100%;">
+        <form id="f-sign_in" class="container-signin theme">
+            <div id="logo-container" class="container-logo">
+                <img class="logo" src="img/logo.svg" alt="TickTick logo">
+                <h1 id="page-title" class="font-title" style="margin-top: 1%;">Sign in TickTick</h1>
+            </div>
+
+            <div>
+                <div class="input">
+                    <input id="email" type="email" placeholder="Email">
+                    <h3 id="inc-user" class="wrong-message font-light hidden">Incorrect email</h3>
+                    <div class="password-input">
+                        <input id="password" type="password" placeholder="Password">
+                        <i id="eye" class='bx bxs-show'></i>
+                    </div>
+                    <h3 id="inc-pass" class="wrong-message font-light hidden">Incorrect password</h3>
+                    <a id="forgotPassword" class="text-blue left-align font-bold hover" href="#">Forgot password?</a>
+                </div>
+
+                <button id="sign-btn" class="blue-button font-bold" type="submit" >Sign in</button>
+                
+                <div class="in-line create-account">
+                    <h3 id="account-msg" class="font-light">Don’t have an account?</h3>
+                    <a  id="register" class="text-blue font-bold hover" style="margin-left: 0.6vh;" href="#">Register</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
