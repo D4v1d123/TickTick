@@ -1,0 +1,312 @@
+:root {
+    --border-rounded: 0.7vw;
+    --border-width: 0.15vw;   
+}
+
+.input {
+    margin-bottom: 15%;
+}
+
+.input input, select {
+    display: block;
+    margin-bottom: 1.5vh;
+    padding: 3% 3% 3% 6%;
+    width: 100%;
+    border-style: solid;
+    border-width: 0.05vw;
+    border-radius: var(--border-rounded);
+    box-sizing: border-box; 
+    font-size: var(--text-size);
+}
+
+.trash-icon-container img {
+    width: 1.3vw; 
+    margin: auto; 
+    align-items: center;
+}
+
+.container-login {
+    position: relative;
+    min-height: auto;
+    text-align: center;
+    border-radius: var(--border-rounded);
+    border-style: solid;
+    border-width: var(--border-width);
+}
+
+.container-logo {
+    margin: 14% 20%;
+}
+
+.container-register {
+    position: relative;
+    min-height: auto;
+    text-align: center;
+    border-radius: var(--border-rounded);
+    border-style: solid;
+    border-width: var(--border-width);
+}
+
+.form-button-container {
+    padding: 0 7.5%;
+    position: absolute;
+    align-items: center;
+    bottom: 8vh;
+    left: 0;
+    right: 0;
+}
+
+.create-account {
+    margin-top: 3.85%;
+}
+
+.logo {
+    width: 20%;
+}
+
+.profile-picture {
+    position: relative; 
+    overflow: hidden;
+    background-image: url(../../pages/user-registration/assets/icons/profile.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10rem;
+}
+
+.center-content > i {
+    position: absolute;
+    padding: 1%;
+    margin-bottom: 1.5vh; 
+}
+
+.center-in-screen {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-align {
+    display: block;
+    text-align: left;
+}
+
+/* Light mode */
+@media (prefers-color-scheme: light) {
+    input, select {
+        background-color: var(--gray-light);
+        border-color: white;
+        color: black;
+    }
+
+    .background {
+        background-color: var(--gray-light);
+    }
+
+    .theme {
+        background-color: white;
+        border-color: var(--border-color);
+    }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    input, select {
+        background-color: var(--dark);
+        border-color: #dee2e6;
+        color: white;
+    }
+
+    .background {
+        background-color: var(--gray-dark);
+    }
+
+    .theme {
+        background-color: var(--dark);
+        border-color: #262626;
+    }
+}
+
+/* Tablet responsive */
+@media (min-aspect-ratio: 9/40) {   
+    :root {
+        --text-size: 1vh;
+        --title-size: 2.1vh;
+    }
+
+    .container-login {
+        width: 70%;
+        height: 40%;
+        padding: 0 5%;
+        padding-bottom: 10%;
+    }
+
+    .container-register {
+        width: 70%;
+        height: 40%;
+        padding: 0 5%;
+        padding-bottom: 10%;
+    }
+
+    .center-content > i {
+        transform: translateX(62.3vw);
+    }
+    
+    .profile-picture {
+        width: 9vh; 
+        height: 9vh;
+    }
+}
+
+@media (min-aspect-ratio: 9/16) {   
+    :root {
+        --text-size: 1.5vh;
+        --title-size: 3.15vh;
+    } 
+
+    .container-login {
+        width: 70%;
+        height: 55%;
+        padding: 0 5%;
+        padding-bottom: 10%;
+    }
+    
+    .container-register {
+        width: 70%;
+        height: 55%;
+        padding: 0 5%;
+        padding-bottom: 10%;
+    }
+    
+    .center-content > i {
+        transform: translateX(62.8vw);
+    }
+    
+    .profile-picture {
+        width: 12vh; 
+        height: 12vh;
+    }
+}
+
+@media (min-aspect-ratio: 3/4) {   
+    :root {
+        --text-size: 1.5vh;
+        --title-size: 3.15vh;
+    } 
+
+    .container-login {
+        width: 55%;
+        height: 55%;
+        padding: 0 5%;
+        padding-bottom: 10%;
+    }
+    
+    .container-register {
+        width: 55%;
+        height: 55%;
+        padding: 0 5%;
+        padding-bottom: 10%;
+    }
+    
+    .center-content > i {
+        transform: translateX(49.3vw);
+    }
+
+    .profile-picture {
+        width: 12vh; 
+        height: 12vh;
+    }
+}
+
+/* Desktop Responsive */
+@media (min-aspect-ratio: 4/3) {
+    :root {
+        --text-size: 1.3vw;
+        --title-size: 2.1vw;
+    }
+
+    .container-login {
+        width: 35%;
+        height: 65%;
+        padding: 0 3%;
+        padding-bottom: 6%;
+    }
+
+    .container-register {
+        width: 35%;
+        height: 65%;
+        padding: 0 3%;
+        padding-bottom: 6%;
+    }
+
+    .center-content > i {
+        transform: translateX(30.8vw);
+    }
+
+    .profile-picture {
+        width: 10vw; 
+        height: 10vw;
+    }
+}
+
+@media (min-aspect-ratio: 16/9) {
+    :root {
+        --text-size: 1.3vw;
+        --title-size: 2.1vw;
+    }
+
+    .container-login {
+        width: 30%;
+        height: 67%;
+        padding: 0 3%;
+        padding-bottom: 6%;
+    }
+
+    .container-register {
+        width: 30%;
+        height: 67%;
+        padding: 0 3%;
+        padding-bottom: 6%;
+    }
+
+    .center-content > i {
+        transform: translateX(26.1vw);
+    }
+
+    .profile-picture {
+        margin-top: -5%;
+        width: 8vw; 
+        height: 8vw;
+    }
+}
+
+@media (min-aspect-ratio: 21/9) {
+    :root {
+        --text-size: 1vw;
+        --title-size: 1.6vw;
+    }
+
+    .container-login {
+        width: 25%;
+        height: 72%;
+        padding: 0 3%;
+        padding-bottom: 5%;
+    }
+
+    .container-register {
+        width: 25%;
+        height: 72%;
+        padding: 0 3%;
+        padding-bottom: 5%;
+    }
+
+    .center-content > i {
+        transform: translateX(20.6vw);
+    }
+
+    .profile-picture {
+        width: 7vw; 
+        height: 7vw;
+    }
+}
