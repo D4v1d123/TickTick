@@ -11,25 +11,25 @@ class UserViewSet(viewsets.ModelViewSet):
         version = self.request.version
         
         # API version 1
-        if(version == "v1"):
+        if(version == 'v1'):
             return UserSerializerV1
 
 
 class CheckUniqueEmailAPIView(views.APIView):
     def post(self, request, version):
         # API version 1
-        if(version == "v1"):
+        if(version == 'v1'):
             email = request.data.get('email')        
             serializer = EmailSerializerV1(data={'email': email})
             
             if(not(serializer.is_valid())):
                 return Response(
-                    {"detail": "The 'email' parameter must have username@domain.extension"},
+                    {'detail': 'The \'email\' parameter must have username@domain.extension'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
             email_exists = Accounts.objects.values('email').filter(email=email).exists()
             return Response(
-                {"isAvailable": not(email_exists)}, 
+                {'isAvailable': not(email_exists)}, 
                 status=status.HTTP_200_OK
             )
