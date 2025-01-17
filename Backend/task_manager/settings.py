@@ -78,12 +78,20 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'NAME': 'db_tick_tick',
+        'USER': 'admin_tick_tick',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
+}
+
+
+# Django Rest Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSION': 'v1',
+    'ALLOWED_VERSIONS': ['v1'],
 }
 
 

@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Accounts
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializerV1(serializers.ModelSerializer):
     class Meta:
         model = Accounts
         fields = '__all__'
@@ -11,5 +11,5 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     
-class EmailSerializer(serializers.Serializer):
+class EmailSerializerV1(serializers.Serializer):
     email = serializers.EmailField()
