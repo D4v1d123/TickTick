@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="../../global/js/show-content.js" async></script>
+    <script type="module" src="js/email-generator.js" defer></script>
     <script type="module" src="js/translator.js" defer></script>
     <script type="module" src="js/register-form.js" defer></script>
     <script type="module" src="js/date-input-handler.js" defer></script>
@@ -93,15 +94,15 @@
 
                     <div>
                         <label class="options">
-                            <input value="example3265@ticktick.com" name="opt-email" type="radio">
-                            <p>example3265@ticktick.com</p>
+                            <input id="inp-email-1" value="" name="opt-email" type="radio">
+                            <p id="opt-email-1">Loading ...</p>
                         </label>
                         <label class="options">
-                            <input value="examplenewemail3265@ticktick.com" name="opt-email" type="radio">
-                            <p>examplenewemail3265@ticktick.com</p>
+                            <input id="inp-email-2" value="" name="opt-email" type="radio">
+                            <p id="opt-email-2">Loading ...</p>
                         </label>
                         <label class="options">
-                            <input value="custom-email" name="opt-email" type="radio" checked>
+                            <input id="inp-email-3" value="custom-email" name="opt-email" type="radio" checked>
                             <p id="step-4-option">Create your own email</p>
                         </label>
                     </div>

@@ -1,3 +1,5 @@
+import { emailIsAvailable } from "./request-api.js"
+
 const getID = document.getElementById.bind(document),
       getName = document.getElementsByName.bind(document),
       userLanguage = (navigator.language || navigator.userLanguage).slice(0, 2),
@@ -23,6 +25,12 @@ const inpFName = getID('inp-fname'),
 
 // Selects
 const slcEmail = getName('opt-email')
+
+// Options
+const optEmail1 = getID('opt-email-1'), 
+      optEmail2 = getID('opt-email-2'),
+      inpEmail1 = getID('inp-email-1'),
+      inpEmail2 = getID('inp-email-2')
 
 // Error messages
 const incFName = getID('inc-fname'),
@@ -105,13 +113,16 @@ window.addEventListener('load', () => {
         }
 
         inpFName.value = sessionStorage.getItem('firstName')
-        inpFName.value = sessionStorage.getItem('firstName')
         inpLName.value = sessionStorage.getItem('lastName')
         inpGender.value = sessionStorage.getItem('gender')
         inpRecEmail.value = sessionStorage.getItem('recoveryEmail')
         inpEmail.value = sessionStorage.getItem('email')
         inpPassword.value = sessionStorage.getItem('password')
         inpPassConfirm.value = sessionStorage.getItem('password')
+        optEmail1.innerText = sessionStorage.getItem('email1')
+        optEmail2.innerText = sessionStorage.getItem('email2')
+        inpEmail1.value = sessionStorage.getItem('email1')
+        inpEmail2.value = sessionStorage.getItem('email2')
 
         if (sessionStorage.getItem('selectedOption')) {
             slcEmail[sessionStorage.getItem('selectedOption')].checked = true
@@ -183,7 +194,6 @@ btnNext.addEventListener('click', () => {
                 emailOption = option.value
                 break
             }
-
             index++
         }
 
@@ -203,18 +213,32 @@ btnNext.addEventListener('click', () => {
 
     // Step 5 (email custom)
     if (currentStep == 5 && nextClicked == false) {
+        const email = inpEmail.value,
+              emailOptions = {
+                  [inpEmail1.value]: 'emailOption1',
+                  [inpEmail2.value]: 'emailOption2',
+                  '': 'emailCustom',
+              }
+            
         if (!inpEmail.value.includes('@')) {
             incEmail.textContent = (userLanguage == 'es') ? 'El correo electrónico debe de tener el signo "@"' : 'Email must have an “@” sign'
+        } else if (!(email in emailOptions)) {
+            emailIsAvailable(email).then(data => {
+                if(!(data.isAvailable)){
+                    incEmail.textContent = (userLanguage == 'es') ? 'El correo electrónico ya existe' : 'Email already exists'
+                } else {
+                    // Continue to the next step if there are no errors
+                    incEmail.textContent = ''
+                    sessionStorage.setItem('recoveryEmail', inpRecEmail.value)
+                    showNextStep(currentStep, nextStep)  
+                }
+            })
         } else {
+            // Continue to the next step if there are no errors
             incEmail.textContent = ''
+            sessionStorage.setItem('recoveryEmail', inpRecEmail.value)
+            showNextStep(currentStep, nextStep)  
         }
-
-        // Continue to the next step if there are no error message
-        nextClicked = error = (incEmail.textContent !== '')
-        if (!error) {
-            sessionStorage.setItem('email', inpEmail.value)
-            showNextStep(currentStep, nextStep) 
-        } 
     }
 
     // Step 6 (password)
@@ -294,6 +318,7 @@ btnNext.addEventListener('click', () => {
 btnBack.addEventListener('click', () => {
     currentStep = parseInt(sessionStorage.getItem('step'))
     previewStep = currentStep - 1
+    incEmail.innerText = ''
     
     // Step 7 (profile picture)
     if (currentStep == 7) btnNext.innerText = 'Next'

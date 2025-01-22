@@ -32,6 +32,8 @@ if (userLanguage.slice(0, 2) == 'es') {
     getID('step-4-title').innerText = 'Información de inicio de sesión'
     getID('step-4-description').innerText = 'Elige tu correo electrónico para iniciar sesión en TickTick'
     getID('step-4-option').innerText = 'Crea tu propio correo electrónico'
+    getID('opt-email-1').innerText = 'Cargando ...' 
+    getID('opt-email-2').innerText = 'Cargando ...'
     
     // Step 5 (email custom)
     getID('step-5-title').innerText = 'Información de inicio de sesión'
