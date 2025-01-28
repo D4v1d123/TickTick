@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 
 import dj_database_url
+from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -60,9 +61,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "https://ticktick-47hh.onrender.com",
-]
+ALLOWED_ORIGINS = config('ALLOWED_ORIGINS', cast=lambda hosts: [host.strip() for host in hosts.split(',')])
+
+CORS_ALLOWED_ORIGINS = ALLOWED_ORIGINS
 
 ROOT_URLCONF = 'task_manager.urls'
 
@@ -87,9 +88,15 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+PG_HOST = config('POSTGRESQL_HOST')
+PG_PORT = config('POSTGRESQL_PORT')
+PG_USER = config('POSTGRESQL_USER')
+PG_PASSWORD = config('POSTGRESQL_PASSWORD')
+PG_DB = config('POSTGRESQL_DB')
+
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://admin_tick_tick:admin@localhost:5433/db_tick_tick',
+        default=f'postgresql://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DB}',
         conn_max_age=600
     )
 }

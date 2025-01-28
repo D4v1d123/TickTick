@@ -6,6 +6,9 @@ Thumbs.db
 # Virtual environment
 venv/
 
+# Environment variables
+.env
+
 # Django
 __pycache__
 db.sqlite3
