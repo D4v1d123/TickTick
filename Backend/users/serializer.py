@@ -10,6 +10,6 @@ class UserSerializerV1(serializers.ModelSerializer):
             'password': {'write_only': True},
         }
 
-    
+
 class EmailSerializerV1(serializers.Serializer):
     email = serializers.EmailField()

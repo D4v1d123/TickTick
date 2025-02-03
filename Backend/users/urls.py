@@ -1,13 +1,9 @@
-from django.urls import include, path
-from rest_framework import routers
+from django.urls import path
 
-from users.views import CheckUniqueEmailAPIView, UserViewSet 
-
-
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet, 'users')
+from users.views import CheckUniqueEmailAPIView, UserAPIView
 
 urlpatterns = [
-    path('users/is-available', CheckUniqueEmailAPIView.as_view()),
-    path('', include(router.urls)),
+    path('users/is-available/', CheckUniqueEmailAPIView.as_view()),
+    path('users/', UserAPIView.as_view()),
+    path('users/<int:id_user>/', UserAPIView.as_view()),
 ]

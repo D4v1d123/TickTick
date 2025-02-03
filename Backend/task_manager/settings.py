@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+import cloudinary
 import dj_database_url
 from decouple import config
 
@@ -62,7 +63,6 @@ MIDDLEWARE = [
 ]
 
 ALLOWED_ORIGINS = config('ALLOWED_ORIGINS', cast=lambda hosts: [host.strip() for host in hosts.split(',')])
-
 CORS_ALLOWED_ORIGINS = ALLOWED_ORIGINS
 
 ROOT_URLCONF = 'task_manager.urls'
@@ -154,3 +154,10 @@ if not DEBUG:
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+cloudinary.config( 
+    cloud_name = config('CLOUDINARY_CLOUD_NAME'), 
+    api_key = config('CLOUDINARY_API_KEY'), 
+    api_secret = config('CLOUDINARY_API_SECRET'),
+    secure=True
+)
