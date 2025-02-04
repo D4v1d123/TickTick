@@ -163,7 +163,11 @@ btnNext.addEventListener('click', () => {
     
     // Step 2 (age and gender)
     if (currentStep == 2 && nextClicked == false) {
-        showErrorMessage(inpBirthdate, incDate, 'Birthdate', 'Birthdate can’t be empty', 'La fecha de nacimiento no puede ser vacía')
+        const regex = /^\d{2,4}-\d{2,4}-\d{2,4}$/,
+              userLanguage = (navigator.language || navigator.userLanguage).slice(0, 2),
+              message = (userLanguage == 'es') ? 'La fecha de nacimiento no puede ser vacía' : 'Birthdate can’t be empty'
+
+        incDate.textContent = !(regex.test(inpBirthdate.value)) ? message : ''
         showErrorMessage(inpGender, incGender, 'Gender', 'Gender can’t be empty', 'El género no puede ser vacío')
 
         // Continue to the next step if there are no error message
