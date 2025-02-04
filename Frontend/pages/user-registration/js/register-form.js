@@ -108,10 +108,6 @@ showButtons(btnBack, btnSignIn, parseInt(sessionStorage.getItem('step')))
 // Page reload
 window.addEventListener('load', () => {
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-        if (!sessionStorage.getItem('birthdate')) {
-            sessionStorage.setItem('birthdate', inpBirthdate.value)
-        }
-
         inpFName.value = sessionStorage.getItem('firstName')
         inpLName.value = sessionStorage.getItem('lastName')
         inpGender.value = sessionStorage.getItem('gender')
@@ -123,6 +119,12 @@ window.addEventListener('load', () => {
         optEmail2.innerText = sessionStorage.getItem('email2')
         inpEmail1.value = sessionStorage.getItem('email1')
         inpEmail2.value = sessionStorage.getItem('email2')
+        imgProfile.style.backgroundImage = sessionStorage.getItem('profileImg')
+        
+        if (sessionStorage.getItem('birthdate')) {
+            inpBirthdate.value = sessionStorage.getItem('birthdate')
+            inpBirthdate.type = 'date'
+        }
 
         if (sessionStorage.getItem('selectedOption')) {
             slcEmail[sessionStorage.getItem('selectedOption')].checked = true
@@ -285,10 +287,11 @@ btnNext.addEventListener('click', () => {
     // Step 7 (profile picture)
     if ((currentStep == 7 || nextStep == 7) && nextClicked == false) {
         btnNext.innerText = 'Register'
-
+        
         btnDeleteImg.addEventListener('click', () => {
             inpFile.value = ''
             imgProfile.style.backgroundImage = 'url("../../pages/user-registration/assets/icons/profile.svg")'
+            sessionStorage.setItem('profileImg', null)
         })
         
         btnUploadImg.addEventListener('click', () => {
@@ -304,6 +307,8 @@ btnNext.addEventListener('click', () => {
                 const size = file.size,
                       sizeInMB = (size / 1024) / 1024,
                       imageURL = URL.createObjectURL(file)
+                      sessionStorage.setItem('file', file)
+                      sessionStorage.setItem('profileImg', 'url('+ imageURL + ')')
     
                 if (sizeInMB > 10) {
                     incImage.textContent = (userLanguage == 'es') ? 'La imagen no puede pesar más de 10 MB' : 'The image cannot weigh more than 10 MB'
