@@ -132,6 +132,13 @@ window.addEventListener('load', () => {
     }
 })
 
+// Enter button
+document.addEventListener('keydown', (event) => {
+    if (event.key == 'Enter'){
+        btnNext.click()
+    }
+})
+
 // Next button
 btnNext.addEventListener('click', () => {
     currentStep = parseInt(sessionStorage.getItem('step'))
