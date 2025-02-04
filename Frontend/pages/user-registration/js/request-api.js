@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/api/v1'
+import API_URL from '../../../env.js'
 
 // Check if an email is not registered in the database
 async function emailIsAvailable(email) {
@@ -7,7 +7,7 @@ async function emailIsAvailable(email) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/users/is-available`, {
+        const response = await fetch(`${API_URL}users/is-available/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
