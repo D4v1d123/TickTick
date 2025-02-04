@@ -96,8 +96,7 @@ function showFirstWindow () {
 }
 
 function showErrorMessage (input, label, value, msgEnglish, msgSpanish) {
-    const userLanguage = (navigator.language || navigator.userLanguage).slice(0, 2),
-          message = (userLanguage == 'es') ? msgSpanish : msgEnglish
+    const message = (userLanguage == 'es') ? msgSpanish : msgEnglish
 
     label.textContent = (input.value == value) ? message : ''
 }
@@ -166,7 +165,6 @@ btnNext.addEventListener('click', () => {
     // Step 2 (age and gender)
     if (currentStep == 2 && nextClicked == false) {
         const regex = /^\d{2,4}-\d{2,4}-\d{2,4}$/,
-              userLanguage = (navigator.language || navigator.userLanguage).slice(0, 2),
               message = (userLanguage == 'es') ? 'La fecha de nacimiento no puede ser vacía' : 'Birthdate can’t be empty'
 
         incDate.textContent = !(regex.test(inpBirthdate.value)) ? message : ''
@@ -286,7 +284,7 @@ btnNext.addEventListener('click', () => {
     
     // Step 7 (profile picture)
     if ((currentStep == 7 || nextStep == 7) && nextClicked == false) {
-        btnNext.innerText = 'Register'
+        btnNext.innerText = (userLanguage == 'es') ? 'Registrar' : 'Register'
         
         btnDeleteImg.addEventListener('click', () => {
             inpFile.value = ''
