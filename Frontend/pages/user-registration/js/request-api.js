@@ -1,4 +1,4 @@
-import API_URL from '../../../env.js'
+const API_URL = 'https://api-ticktick.onrender.com/api/v1/'
 
 // Check if an email is not registered in the database
 async function emailIsAvailable(email) {
