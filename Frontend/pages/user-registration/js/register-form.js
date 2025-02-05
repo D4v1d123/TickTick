@@ -1,3 +1,4 @@
+import * as h2a from 'https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js'
 import { emailIsAvailable } from "./request-api.js"
 
 const getID = document.getElementById.bind(document),
@@ -99,6 +100,15 @@ function showErrorMessage (input, label, value, msgEnglish, msgSpanish) {
     const message = (userLanguage == 'es') ? msgSpanish : msgEnglish
 
     label.textContent = (input.value == value) ? message : ''
+}
+
+async function convertHeicToJpeg(file) {
+    try {
+        const fileConverted = await heic2any({blob: file, toType: 'image/jpeg'})
+        return URL.createObjectURL(fileConverted)
+    } catch (error) {
+        return null
+    }
 }
 
 showFirstWindow()
@@ -298,28 +308,31 @@ btnNext.addEventListener('click', () => {
         
         // Show selected image in preview circle
         inpFile.addEventListener('change', () => {
-            const file = inpFile.files[0],
-                  reader = new FileReader()
+            const file = inpFile.files[0]
 
             if (file) {
-                const size = file.size,
-                      sizeInMB = (size / 1024) / 1024,
-                      imageURL = URL.createObjectURL(file)
-                      sessionStorage.setItem('file', file)
-                      sessionStorage.setItem('profileImg', 'url('+ imageURL + ')')
-    
+                const sizeInMB = (file.size / 1024) / 1024,
+                      imageURL = URL.createObjectURL(file),
+                      type = file.type
+                sessionStorage.setItem('file', file)
+
                 if (sizeInMB > 10) {
                     incImage.textContent = (userLanguage == 'es') ? 'La imagen no puede pesar más de 10 MB' : 'The image cannot weigh more than 10 MB'
                     return
                 } else {
                     incImage.textContent = ''
                 }
-    
-                reader.onload = () => {
+
+                // Convert HEIC/HEIF image to browser compatible format and preview it
+                if (['image/heic', 'image/heif'].includes(type)) {
+                    convertHeicToJpeg(file).then((URL) => {
+                        imgProfile.style.backgroundImage = 'url('+ URL + ')'
+                        sessionStorage.setItem('profileImg', 'url('+ URL + ')')
+                    }) 
+                } else {
                     imgProfile.style.backgroundImage = 'url('+ imageURL + ')'
+                    sessionStorage.setItem('profileImg', 'url('+ imageURL + ')')
                 }
-    
-                reader.readAsDataURL(file)
             }
         })
     }
