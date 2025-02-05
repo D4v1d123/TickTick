@@ -29,7 +29,14 @@ class UserAPIView(views.APIView):
     IMG_FORMAT = 'AVIF'
     UPLOAD_FOLDER = 'profile_pictures_tick_tick'
     
-    type_images = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml']
+    type_images = [
+        'image/jpeg', 
+        'image/png', 
+        'image/webp', 
+        'image/svg+xml', 
+        'image/heic', 
+        'image/heif'
+    ]
 
     def get(self, request, version, id_user=None):
         try:
@@ -173,7 +180,11 @@ class UserAPIView(views.APIView):
                             data['id_profile_img'] = None
                             data['profile_img_path'] = None
 
+                        # Update account profile photo 
                         if file and (file != 'Null'):
+                            if account.id_profile_img:
+                                cloudinary.destroy(account.id_profile_img)
+
                             upload_result = cloudinary.upload(
                                 file, format=self.IMG_FORMAT, folder=self.UPLOAD_FOLDER
                             )
