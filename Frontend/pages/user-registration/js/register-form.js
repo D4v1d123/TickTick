@@ -1,5 +1,5 @@
 import * as h2a from 'https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js'
-import { emailIsAvailable } from "./request-api.js"
+import { emailIsAvailable, createAccount } from "./request-api.js"
 
 const getID = document.getElementById.bind(document),
       getName = document.getElementsByName.bind(document),
@@ -43,6 +43,8 @@ const incFName = getID('inc-fname'),
       incPassword = getID('inc-password'),
       incPassConfirm = getID('inc-pass-confirm'),
       incImage = getID('inc-image')
+
+let profileImgFile = null
 
 // Steps and windows
 let currentStep = parseInt(sessionStorage.getItem('step')),
@@ -128,7 +130,6 @@ window.addEventListener('load', () => {
         optEmail2.innerText = sessionStorage.getItem('email2')
         inpEmail1.value = sessionStorage.getItem('email1')
         inpEmail2.value = sessionStorage.getItem('email2')
-        imgProfile.style.backgroundImage = sessionStorage.getItem('profileImg')
         
         if (sessionStorage.getItem('birthdate')) {
             inpBirthdate.value = sessionStorage.getItem('birthdate')
@@ -298,8 +299,8 @@ btnNext.addEventListener('click', () => {
         
         btnDeleteImg.addEventListener('click', () => {
             inpFile.value = ''
+            profileImgFile = null
             imgProfile.style.backgroundImage = 'url("../../pages/user-registration/assets/icons/profile.svg")'
-            sessionStorage.setItem('profileImg', null)
         })
         
         btnUploadImg.addEventListener('click', () => {
@@ -308,33 +309,46 @@ btnNext.addEventListener('click', () => {
         
         // Show selected image in preview circle
         inpFile.addEventListener('change', () => {
-            const file = inpFile.files[0]
+            profileImgFile = inpFile.files[0]
 
-            if (file) {
-                const sizeInMB = (file.size / 1024) / 1024,
-                      imageURL = URL.createObjectURL(file),
-                      type = file.type
-                sessionStorage.setItem('file', file)
-
+            if (profileImgFile) {
+                const sizeInMB = (profileImgFile.size / 1024) / 1024,
+                      imageURL = URL.createObjectURL(profileImgFile),
+                      type = profileImgFile.type
+                      
                 if (sizeInMB > 10) {
                     incImage.textContent = (userLanguage == 'es') ? 'La imagen no puede pesar más de 10 MB' : 'The image cannot weigh more than 10 MB'
                     return
                 } else {
                     incImage.textContent = ''
                 }
-
+                
                 // Convert HEIC/HEIF image to browser compatible format and preview it
                 if (['image/heic', 'image/heif'].includes(type)) {
-                    convertHeicToJpeg(file).then((URL) => {
+                    convertHeicToJpeg(profileImgFile).then((URL) => {
                         imgProfile.style.backgroundImage = 'url('+ URL + ')'
-                        sessionStorage.setItem('profileImg', 'url('+ URL + ')')
                     }) 
                 } else {
                     imgProfile.style.backgroundImage = 'url('+ imageURL + ')'
-                    sessionStorage.setItem('profileImg', 'url('+ imageURL + ')')
                 }
             }
         })
+    }
+
+    // Register user or create account
+    if (nextStep == 8 && nextClicked == false) {
+        const accountData = {
+            email: sessionStorage.getItem('email'), 
+            password: sessionStorage.getItem('password'), 
+            firstName: sessionStorage.getItem('firstName'), 
+            lastName: sessionStorage.getItem('lastName'), 
+            birthdate: sessionStorage.getItem('birthdate'), 
+            gender: sessionStorage.getItem('gender'), 
+            recoveryEmail: sessionStorage.getItem('recoveryEmail'), 
+            profileImgFile: profileImgFile 
+        }
+        
+        createAccount(accountData)
     }
 
     nextClicked = false
