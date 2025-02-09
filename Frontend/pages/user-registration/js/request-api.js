@@ -1,5 +1,4 @@
-const API_URL = 'https://api-ticktick.onrender.com/api/v1/',
-      userLanguage = navigator.language || navigator.userLanguage  
+const API_URL = 'https://api-ticktick.onrender.com/api/v1/'
 
 // Check if an email is not registered in the database
 async function emailIsAvailable(email) {
@@ -49,15 +48,7 @@ async function createAccount(accountData) {
             body: formData
         })
 
-        if (response.ok) {
-            sessionStorage.clear()
-            window.location.replace('../homepage/homepage.html')
-        } else {
-            const data = await response.json(),
-                  message = (userLanguage == 'es') ? '¡Ups! Algo salió mal' : 'Oops! Something went wrong' 
-
-            console.error(`${message} \n${data.error}`)
-        }
+        return (await response.json())
     } catch (error) {
         console.error(error)
     }

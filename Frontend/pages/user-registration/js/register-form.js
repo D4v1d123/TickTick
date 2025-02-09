@@ -349,6 +349,15 @@ btnNext.addEventListener('click', () => {
         }
         
         createAccount(accountData)
+        .then((data) => {
+            if (data.error) {
+                const message = (userLanguage == 'es') ? '¡Ups! Algo salió mal' : 'Oops! Something went wrong' 
+                console.error(`${message} \n"${data.error}"`)
+            } else {
+                sessionStorage.clear()
+                window.location.replace('../homepage/homepage.html')
+            }
+        })
     }
 
     nextClicked = false
