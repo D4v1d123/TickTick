@@ -1,11 +1,15 @@
 import * as h2a from 'https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js'
-import { emailIsAvailable, createAccount } from "./request-api.js"
+import * as md from 'https://cdn.jsdelivr.net/npm/mobile-detect@1.4.5/mobile-detect.min.js'
+import { showWindowWithFade, hideWindowWithFade } from '../../../global/js/utils/window-effects.js'
+import { errorModal } from '../../../global/js/components/modals.js'
+import { spinner } from '../../../global/js/components/loaders.js'
+import { emailIsAvailable, createAccount } from './request-api.js'
 
 const getID = document.getElementById.bind(document),
       getName = document.getElementsByName.bind(document),
       userLanguage = (navigator.language || navigator.userLanguage).slice(0, 2),
-      imgProfile = getID('img-profile')
-
+      device = new MobileDetect(window.navigator.userAgent)
+      
 // Buttons
 const btnNext = getID('btn-next'),
       btnBack = getID('btn-back'),
@@ -53,6 +57,10 @@ let currentStep = parseInt(sessionStorage.getItem('step')),
     currentWindow = getID('step-' + currentStep),
     nextWindow = getID('step-' + nextStep),
     previewWindow = getID('step-' + previewStep)
+
+// Containers
+const contForm = getID('frm-register'),
+      contImgProfile = getID('img-profile')
 
 // Next button
 let nextClicked = false,
@@ -300,7 +308,7 @@ btnNext.addEventListener('click', () => {
         btnDeleteImg.addEventListener('click', () => {
             inpFile.value = ''
             profileImgFile = null
-            imgProfile.style.backgroundImage = 'url("../../pages/user-registration/assets/icons/profile.svg")'
+            contImgProfile.style.backgroundImage = 'url("../../pages/user-registration/assets/icons/profile.svg")'
         })
         
         btnUploadImg.addEventListener('click', () => {
@@ -326,10 +334,10 @@ btnNext.addEventListener('click', () => {
                 // Convert HEIC/HEIF image to browser compatible format and preview it
                 if (['image/heic', 'image/heif'].includes(type)) {
                     convertHeicToJpeg(profileImgFile).then((URL) => {
-                        imgProfile.style.backgroundImage = 'url('+ URL + ')'
+                        contImgProfile.style.backgroundImage = 'url('+ URL + ')'
                     }) 
                 } else {
-                    imgProfile.style.backgroundImage = 'url('+ imageURL + ')'
+                    contImgProfile.style.backgroundImage = 'url('+ imageURL + ')'
                 }
             }
         })
@@ -337,6 +345,8 @@ btnNext.addEventListener('click', () => {
 
     // Register user or create account
     if (nextStep == 8 && nextClicked == false) {
+        let loadingWindow = getID('loadingWindow'),
+            errorPopUp = getID('errorPopUp')
         const accountData = {
             email: sessionStorage.getItem('email'), 
             password: sessionStorage.getItem('password'), 
@@ -346,17 +356,40 @@ btnNext.addEventListener('click', () => {
             gender: sessionStorage.getItem('gender'), 
             recoveryEmail: sessionStorage.getItem('recoveryEmail'), 
             profileImgFile: profileImgFile 
-        }
+        } 
+
+        // Add loading window based on device type
+        if (!loadingWindow) {
+            const container = (device.mobile() || device.phone()) ? contForm : document.body
+            container.insertAdjacentHTML('beforeend', spinner('loadingWindow'))
+        } 
+
+        showWindowWithFade(getID('loadingWindow')) // Show loading window     
         
         createAccount(accountData)
         .then((data) => {
             if (data.error) {
-                const message = (userLanguage == 'es') ? '¡Ups! Algo salió mal' : 'Oops! Something went wrong' 
-                console.error(`${message} \n"${data.error}"`)
+                const titlePopUp = (userLanguage == 'es') ? '¡Ups! Algo salió mal' : 'Oops! Something went wrong', 
+                      msgClosePopUp = (userLanguage == 'es') ? 'Cerrar' : 'Close' 
+                      
+                hideWindowWithFade(getID('loadingWindow')) // Hide loading window
+
+                setTimeout(() => {
+                    // Add error popup based on device type
+                    if (!errorPopUp) {
+                        const container = (device.mobile() || device.phone()) ? contForm : document.body
+                        container.insertAdjacentHTML('beforeend', errorModal('errorPopUp', titlePopUp, `error: ${data.error}`, msgClosePopUp))
+                    } 
+
+                    showWindowWithFade(getID('errorPopUp')) // Show popup
+
+                    const btnClosePopUp = getID('btn-close-pop-up')
+                    btnClosePopUp.addEventListener('click', () => hideWindowWithFade(getID('errorPopUp')))
+                }, 400)
             } else {
                 sessionStorage.clear()
                 window.location.replace('../homepage/homepage.html')
-            }
+            }   
         })
     }
 

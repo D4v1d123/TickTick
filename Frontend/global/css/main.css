@@ -8,12 +8,15 @@
     --gray-hover: #b0b5ba;
     --font-color-light: black;
     --font-color-dark: white;
-    --border-color: #dee2e6;  
+    --border-color: #dee2e6;
+    --transition-time: 0.2s; 
 }
 
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
+    position: relative;
+    overflow: hidden;
 }
 
 h1, h3 {
@@ -41,7 +44,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
     color: white;
 }
 
-.blue-button:hover {
+.blue-button:hover, .btn-primary:hover {
     transition: var(--transition-time);
     background-color: var(--blue-hover);
 }
@@ -175,6 +178,78 @@ input[type='date']::-webkit-calendar-picker-indicator {
     color: var(--red);
 }
 
+.pop-up-content {
+    border: 0.5px solid black;
+    border-radius: 0.4rem;
+    margin: 0.5rem;
+    width: 500px;
+}
+  
+.pop-up-header {
+    border-top-left-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+    background-color: var(--red);
+    color: var(--font-color-dark);
+    padding: 3.9%;
+}
+
+.pop-up-body {
+    padding: 3.7%;
+}
+
+.pop-up-header, .pop-up-body {
+    text-align: start;
+}
+
+.pop-up-footer {
+    padding: 3%;
+    text-align: end;
+}
+
+.btn-primary {
+    border: none;
+    padding: 2.2%;
+    border-radius: 0.3rem;
+    background-color: var(--blue);
+    color: white;
+}
+
+.window-fade {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.loading-window, .pop-up-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.spinner {
+    border: 0.5rem solid var(--gray-hover);
+    border-left-color: var(--blue);
+    border-right-color: var(--blue);
+    border-radius: 50%;
+    width: 4.5rem;
+    height: 4.5rem;
+    animation: spin 0.8s linear infinite;
+}
+  
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 /* Light mode */
 @media (prefers-color-scheme: light) {
     body {
@@ -200,6 +275,11 @@ input[type='date']::-webkit-calendar-picker-indicator {
     .profile-picture {
         filter: brightness(1.5);
     }
+
+    .pop-up-content {
+        background-color: white;
+        color: var(--font-color-light);
+    }
 }
 
 /* Dark mode */
@@ -222,5 +302,10 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
     .trash-icon-container:hover {
         background-color: rgba(38, 38, 38, 1); 
+    }
+
+    .pop-up-content {
+        background-color: var(--dark);
+        color: var(--font-color-dark);
     }
 }
