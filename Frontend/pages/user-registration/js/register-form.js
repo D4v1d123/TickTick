@@ -259,7 +259,7 @@ btnNext.addEventListener('click', () => {
                 } else {
                     // Continue to the next step if there are no errors
                     incEmail.textContent = ''
-                    sessionStorage.setItem('recoveryEmail', inpRecEmail.value)
+                    sessionStorage.setItem('email', email)
                     showNextStep(currentStep, nextStep)  
                 }
             })
