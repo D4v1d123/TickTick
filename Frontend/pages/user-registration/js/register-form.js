@@ -71,10 +71,10 @@ function showNextStep (currentStep, nextStep) {
     nextWindow = getID('step-' + nextStep)
 
     currentWindow.classList.remove('visible-effect')
-    currentWindow.classList.add('hidden-effect')
+    currentWindow.classList.add('fade')
 
     setTimeout(() => {
-        nextWindow.classList.remove('hidden-effect')
+        nextWindow.classList.remove('fade')
         nextWindow.classList.remove('hidden')
         nextWindow.classList.add('visible-effect')
         currentWindow.classList.add('hidden')
@@ -101,7 +101,7 @@ function showFirstWindow () {
         sessionStorage.setItem('step', currentStep)
     }
     
-    currentWindow.classList.remove('hidden-effect')
+    currentWindow.classList.remove('fade')
     currentWindow.classList.add('visible-effect')
     currentWindow.classList.remove('hidden')
 }
