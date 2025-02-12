@@ -22,7 +22,7 @@ def non_modifiable_img_data_response(action):
 
 def unsupported_image_response():
     return Response(
-        {'error': 'Unsupported image format, use \'jpeg\', \'png\', \'webp\' or \'svg\''}, 
+        {'error': 'Unsupported image format, use \'jpeg\', \'png\', \'webp\', \'svg\', \'heic\' or \'heif\''},
         status=status.HTTP_400_BAD_REQUEST
     )
 
