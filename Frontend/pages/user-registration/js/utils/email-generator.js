@@ -1,15 +1,10 @@
 import { emailIsAvailable } from './request-api.js'
+import { buttons, options, inputs} from './dom-elements.js'
 
 const DOMAIN = '@ticktick.com',
       MAX_REQUEST_ATTEMPTS = 10
 
-// DOM elements
-let nextButton = document.getElementById('btn-next'),
-    optEmail1 = document.getElementById('opt-email-1'), 
-    optEmail2 = document.getElementById('opt-email-2'),
-    inpEmail1 = document.getElementById('inp-email-1'),
-    inpEmail2 = document.getElementById('inp-email-2'),
-    step3 = document.getElementById('step-3')
+let step3 = document.getElementById('step-3')
 
 function generateRandomEmail(name){
     const randomNumber = Math.trunc(Math.random() * 100000000)
@@ -18,13 +13,13 @@ function generateRandomEmail(name){
 
 // Assign generated email to options of step 4 of the form, and save it in a sessionStorage 
 function assignEmail(optionElement, sessionKeyName, email) {
-    const inputs = {
-        'email1': inpEmail1,
-        'email2': inpEmail2,
+    const inputsEmail = {
+        'email1': inputs.email1,
+        'email2': inputs.email2,
     }
     
-    if(sessionKeyName in inputs){
-        inputs[sessionKeyName].value = email
+    if(sessionKeyName in inputsEmail){
+        inputsEmail[sessionKeyName].value = email
     }
     
     optionElement.innerText = email
@@ -47,15 +42,15 @@ async function generateAndLoadEmail(name, optionElement, sessionKeyName, maxAtte
     console.error(`Failed to generate email after ${maxAttempts} attempts`)
 }
 
-nextButton.addEventListener('click', () => {
+buttons.next.addEventListener('click', () => {
     const isStep3Visible = !(Array.from(step3.classList).includes('hidden'))
 
     // Generate emails in step 4 (email options)
-    if(isStep3Visible && inpEmail1.value == '' & inpEmail2.value == ''){
+    if(isStep3Visible && inputs.email1.value == '' & inputs.email2.value == ''){
         const firstName = (document.getElementById('inp-fname').value).split(' ')[0]
         const lastName = (document.getElementById('inp-lname').value).split(' ')[0]
         
-        generateAndLoadEmail(firstName, optEmail1, 'email1', MAX_REQUEST_ATTEMPTS)
-        generateAndLoadEmail(lastName, optEmail2, 'email2', MAX_REQUEST_ATTEMPTS)
+        generateAndLoadEmail(firstName, options.email1, 'email1', MAX_REQUEST_ATTEMPTS)
+        generateAndLoadEmail(lastName, options.email2, 'email2', MAX_REQUEST_ATTEMPTS)
     }
 })

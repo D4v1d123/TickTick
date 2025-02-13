@@ -1,8 +1,7 @@
-const userLanguage = navigator.language || navigator.userLanguage,
-      getID = document.getElementById.bind(document)
+import { userLanguage, getID } from './dom-elements.js'
 
 // Spanish
-if (userLanguage.slice(0, 2) == 'es') {
+if (userLanguage == 'es') {
     getID('bar-title').innerText = 'Crear cuenta'
 
     // Step 1 (name)
