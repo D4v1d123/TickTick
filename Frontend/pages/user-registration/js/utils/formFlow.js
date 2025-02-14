@@ -39,10 +39,17 @@ export function showFirstWindow () {
     windows.current.classList.add('visible-effect')
 }
 
-export function showErrorMessage (input, label, value, msgEnglish, msgSpanish) {
+export function showErrorMessage (input, label, value, regex = /[\s\S]/, msgEnglish, msgSpanish) {
     const message = (userLanguage == 'es') ? msgSpanish : msgEnglish
 
-    label.textContent = (input.value == value) ? message : ''
+    if (input.value == value){
+        label.textContent = message
+    } else if (!regex.test(input.value)) {
+        label.textContent = (userLanguage == 'es') ? 'Uso de caracteres inválidos' : 'Use of invalid characters'
+    }else {
+        label.textContent = ''
+
+    }
 }
 
 // Assign values ​​to the form when the page is reloaded

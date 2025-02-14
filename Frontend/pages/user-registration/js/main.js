@@ -2,6 +2,7 @@ import { showWindowWithFade, hideWindowWithFade } from '../../../global/js/utils
 import { errorModal } from '../../../global/js/components/modals.js'
 import { spinner } from '../../../global/js/components/loaders.js'
 import { emailIsAvailable, createAccount } from './utils/request-api.js'
+import { emailIsValid, ticktickEmailIsValid } from './utils/email-validator.js'
 import * as utils from './utils/formFlow.js'
 import { 
     buttons, 
@@ -41,8 +42,10 @@ buttons.next.addEventListener('click', () => {
 
     // Step 1 (name)
     if (formSteps.currentStep == 1 && flowControl.nextClicked == false) {
-        utils.showErrorMessage(inputs.fName, errorMessages.fName, '', 'First name can’t be empty', 'El nombre no puede ser vacío')
-        utils.showErrorMessage(inputs.lName, errorMessages.lName, '', 'Last name can’t be empty', 'El apellido no puede ser vacío')
+        const charactersAllowed = /^[a-zA-Z\s]+$/
+
+        utils.showErrorMessage(inputs.fName, errorMessages.fName, '', charactersAllowed, 'First name can’t be empty', 'El nombre no puede ser vacío')
+        utils.showErrorMessage(inputs.lName, errorMessages.lName, '', charactersAllowed, 'Last name can’t be empty', 'El apellido no puede ser vacío')
 
         // Continue to the next step if there are no error message
         flowControl.nextClicked = flowControl.error = (errorMessages.fName.textContent !== '' || errorMessages.lName.textContent !== '')
@@ -56,11 +59,12 @@ buttons.next.addEventListener('click', () => {
     
     // Step 2 (age and gender)
     if (formSteps.currentStep == 2 && flowControl.nextClicked == false) {
-        const regex = /^\d{2,4}-\d{2,4}-\d{2,4}$/,
+        const charactersAllowed = /^[a-zA-Z\s]+$/,
+              dateFormat = /^\d{2,4}-\d{2,4}-\d{2,4}$/,
               message = (userLanguage == 'es') ? 'La fecha de nacimiento no puede ser vacía' : 'Birthdate can’t be empty'
 
-        errorMessages.date.textContent = !(regex.test(inputs.birthdate.value)) ? message : ''
-        utils.showErrorMessage(inputs.gender, errorMessages.gender, 'Gender', 'Gender can’t be empty', 'El género no puede ser vacío')
+        errorMessages.date.textContent = !(dateFormat.test(inputs.birthdate.value)) ? message : ''
+        utils.showErrorMessage(inputs.gender, errorMessages.gender, 'Gender', charactersAllowed, 'Gender can’t be empty', 'El género no puede ser vacío')
 
         // Continue to the next step if there are no error message
         flowControl.nextClicked = flowControl.error = (errorMessages.date.textContent !== '' || errorMessages.gender.textContent !== '')
@@ -73,8 +77,8 @@ buttons.next.addEventListener('click', () => {
     
     // Step 3 (recovery email)
     if (formSteps.currentStep == 3 && flowControl.nextClicked == false) {
-        if (!inputs.recEmail.value.includes('@')) {
-            errorMessages.recEmail.textContent = (userLanguage == 'es') ? 'La dirección de email debe de tener el signo "@"' : 'Email address must have an “@” sign'
+        if (!emailIsValid(inputs.recEmail.value)) {
+            errorMessages.recEmail.textContent = (userLanguage == 'es') ? 'La dirección de email debe tener nombreusuario@dominio.extensión' : 'Email address must have username@domain.extension'
         } else {
             errorMessages.recEmail.textContent = ''
         }
@@ -122,9 +126,9 @@ buttons.next.addEventListener('click', () => {
                   [inputs.email2.value]: 'emailOption2',
                   '': 'emailCustom',
               }
-            
-        if (!inputs.email.value.includes('@')) {
-            errorMessages.email.textContent = (userLanguage == 'es') ? 'El correo electrónico debe de tener el signo "@"' : 'Email must have an “@” sign'
+
+        if (!ticktickEmailIsValid(inputs.email.value)) {
+            errorMessages.email.textContent = (userLanguage == 'es') ? 'La dirección de email debe tener nombreusuario@ticktick.com' : 'Email address must have username@ticktick.com'
         } else if (!(email in emailOptions)) {
             emailIsAvailable(email).then(data => {
                 if(!(data.isAvailable)){
