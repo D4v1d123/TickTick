@@ -59,7 +59,7 @@ buttons.next.addEventListener('click', () => {
     
     // Step 2 (age and gender)
     if (formSteps.currentStep == 2 && flowControl.nextClicked == false) {
-        const charactersAllowed = /^[a-zA-Z\s]+$/,
+        const charactersAllowed = /^[a-zA-Z\s-]+$/,
               dateFormat = /^\d{2,4}-\d{2,4}-\d{2,4}$/,
               message = (userLanguage == 'es') ? 'La fecha de nacimiento no puede ser vacía' : 'Birthdate can’t be empty'
 
