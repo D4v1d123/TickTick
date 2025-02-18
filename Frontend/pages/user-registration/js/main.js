@@ -225,47 +225,54 @@ buttons.next.addEventListener('click', () => {
         let loadingWindow = getID('loadingWindow'),
             errorPopUp = getID('errorPopUp')
         const accountData = {
-            email: sessionStorage.getItem('email'), 
+            username: sessionStorage.getItem('email'), 
             password: sessionStorage.getItem('password'), 
             firstName: sessionStorage.getItem('firstName'), 
             lastName: sessionStorage.getItem('lastName'), 
             birthdate: sessionStorage.getItem('birthdate'), 
             gender: sessionStorage.getItem('gender'), 
-            recoveryEmail: sessionStorage.getItem('recoveryEmail'), 
+            email: sessionStorage.getItem('recoveryEmail'), 
             profileImgFile: files.profileImg 
         } 
 
         // Add loading window based on device type
         if (!loadingWindow) {
-            const container = (device.mobile() || device.phone()) ? contForm : document.body
+            const container = (device.mobile() || device.phone()) ? form : document.body
             container.insertAdjacentHTML('beforeend', spinner('loadingWindow'))
         } 
 
         showWindowWithFade(getID('loadingWindow')) // Show loading window     
         
         createAccount(accountData)
-        .then((data) => {
-            if (data.error) {
-                const titlePopUp = (userLanguage == 'es') ? '¡Ups! Algo salió mal' : 'Oops! Something went wrong', 
-                      msgClosePopUp = (userLanguage == 'es') ? 'Cerrar' : 'Close' 
-                      
-                hideWindowWithFade(getID('loadingWindow')) // Hide loading window
-
-                setTimeout(() => {
-                    // Add error popup based on device type
-                    if (!errorPopUp) {
-                        const container = (device.mobile() || device.phone()) ? contForm : document.body
-                        container.insertAdjacentHTML('beforeend', errorModal('errorPopUp', titlePopUp, `error: ${data.error}`, msgClosePopUp))
-                    } 
-
-                    showWindowWithFade(getID('errorPopUp')) // Show popup
-
-                    const btnClosePopUp = getID('btn-close-pop-up')
-                    btnClosePopUp.addEventListener('click', () => hideWindowWithFade(getID('errorPopUp')))
-                }, 400)
-            } else {
+        .then((response) => {        
+            if (response.ok) {
                 sessionStorage.clear()
                 window.location.replace('../homepage/homepage.html')
+            } else {
+                response.json().then(data => {
+                    const titlePopUp = (userLanguage == 'es') ? '¡Ups! Algo salió mal' : 'Oops! Something went wrong', 
+                          msgClosePopUp = (userLanguage == 'es') ? 'Cerrar' : 'Close' 
+                    let error = ''
+    
+                    Object.entries(data).forEach(([key, value]) => {
+                        error += `${key}: ${value}\n`
+                    })
+                    
+                    hideWindowWithFade(getID('loadingWindow')) // Hide loading window
+    
+                    setTimeout(() => {
+                        // Add error popup based on device type
+                        if (!errorPopUp) {
+                            const container = (device.mobile() || device.phone()) ? form : document.body
+                            container.insertAdjacentHTML('beforeend', errorModal('errorPopUp', titlePopUp, `${error}`, msgClosePopUp))
+                        } 
+    
+                        showWindowWithFade(getID('errorPopUp')) // Show popup
+    
+                        const btnClosePopUp = getID('btn-close-pop-up')
+                        btnClosePopUp.addEventListener('click', () => hideWindowWithFade(getID('errorPopUp')))
+                    }, 400)
+                })
             }   
         })
     }

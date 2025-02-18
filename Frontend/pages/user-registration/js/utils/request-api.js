@@ -28,13 +28,13 @@ export async function usernameIsAvailable(email) {
 export async function createAccount(accountData) {
     let formData = new FormData()
 
-    formData.append('email', accountData.email)
+    formData.append('username', accountData.username)
     formData.append('password', accountData.password)
     formData.append('first_name', accountData.firstName)
     formData.append('last_name', accountData.lastName)
     formData.append('birthdate', accountData.birthdate)
     formData.append('gender', accountData.gender)
-    formData.append('recovery_email', accountData.recoveryEmail)
+    formData.append('email', accountData.email)
 
     if (accountData.profileImgFile) {
         formData.append('file', accountData.profileImgFile)
@@ -47,7 +47,7 @@ export async function createAccount(accountData) {
             body: formData
         })
 
-        return (await response.json())
+        return response
     } catch (error) {
         console.error(error)
     }

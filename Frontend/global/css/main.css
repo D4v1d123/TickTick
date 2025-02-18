@@ -157,7 +157,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .visible-effect {
