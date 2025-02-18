@@ -1,17 +1,14 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 
 class UserGroups(models.Model):
     name = models.CharField(max_length=100)
 
     
-class Accounts(models.Model):
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=50)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+class Accounts(AbstractUser):
     birthdate = models.DateField(null=False)
     gender = models.CharField(max_length=20)
-    recovery_email = models.CharField(max_length=50)
     id_profile_img = models.CharField(unique=True, null=True)
     profile_img_path = models.URLField(null=True)
     

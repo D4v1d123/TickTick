@@ -1,5 +1,5 @@
-from rest_framework import status, views
-from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+from rest_framework import views
 
 import cloudinary.uploader as cloudinary
 from .models import Accounts
@@ -29,6 +29,7 @@ class UserAPIView(views.APIView):
     IMG_FORMAT = 'AVIF'
     UPLOAD_FOLDER = 'profile_pictures_tick_tick'
     
+    User = get_user_model()
     type_images = [
         'image/jpeg', 
         'image/png', 
@@ -37,11 +38,11 @@ class UserAPIView(views.APIView):
         'image/heic', 
         'image/heif'
     ]
-
+    
     def get(self, request, version, id_user=None):
         try:
             if version == 'v1':
-                accounts = Accounts.objects.all()
+                accounts = Accounts.objects.all().filter(is_active=True)
 
                 if id_user:
                     account = accounts.filter(id=id_user).first()
@@ -64,47 +65,39 @@ class UserAPIView(views.APIView):
                 data = request.POST.copy()
                 file = request.data.get('file')
                 file_type = getattr(file, 'content_type', None)
-                id_profile_img = data.get('id_profile_img')
-                profile_img_path = data.get('profile_img_path')
-
-                if accounts.filter(email=data.get('email')).exists():
-                    return registered_email_response()
                 
-                if id_profile_img or profile_img_path:
-                    return non_modifiable_img_data_response('create')
+                if accounts.filter(username=data.get('username')).exists():
+                    return registered_email_response()
 
-                # Check if the request has an image
+                # Check if the request has an unsupported image type 
                 if file and not(file_type in self.type_images):
                     return unsupported_image_response()
             
-                new_account = {
-                    'email': data.get('email'), 
+                user_data = {
+                    'username': data.get('username'), 
                     'password': data.get('password'), 
                     'first_name': data.get('first_name'), 
                     'last_name': data.get('last_name'), 
                     'birthdate': data.get('birthdate'), 
                     'gender': data.get('gender'),
-                    'recovery_email': data.get('recovery_email')
+                    'email': data.get('email')
                 }
-
-                serializer = UserSerializerV1(data=new_account)
+                
+                serializer = UserSerializerV1(data=user_data)
 
                 if serializer.is_valid():
                     if file:
                         upload_result = cloudinary.upload(
                             file, format=self.IMG_FORMAT, folder=self.UPLOAD_FOLDER
                         )
-                        new_account.update({
+                        user_data.update({
                             'id_profile_img': upload_result['public_id'],
                             'profile_img_path': upload_result['secure_url']
                         })
-
-                        # Update serializer with image upload data
-                        serializer = UserSerializerV1(data=new_account)
-                        serializer.is_valid()
-
-                    serializer.save()
-                    return serializer_data_response(serializer)
+                        
+                    # Create user
+                    user = self.User.objects.create_user(**user_data)
+                    return serializer_data_response(UserSerializerV1(user))
                 return serializer_error_response(serializer)
             return invalid_version_response()
         except Exception as error: 
@@ -117,15 +110,17 @@ class UserAPIView(views.APIView):
                 data = request.POST.copy()
                 file = request.data.get('file')
                 file_type = getattr(file, 'content_type', None)
-                id_profile_img = data.get('id_profile_img')
-                profile_img_path = data.get('profile_img_path')
-                if id_profile_img or profile_img_path:
-                    return non_modifiable_img_data_response('update')
                 
-                # Check if the request has an image 
-                if file and not(file_type in self.type_images):
+                if not('is_active' in data):
+                    return required_field_response('is_active')
+                
+                if not(file):
+                    return required_field_response('file')
+                
+                # Check if the request has an unsupported image type 
+                if (file != 'Null') and not(file_type in self.type_images):
                     return unsupported_image_response()
-
+                
                 if account:
                     serializer = UserSerializerV1(account, data) 
                     
@@ -136,7 +131,8 @@ class UserAPIView(views.APIView):
                             data['id_profile_img'] = None
                             data['profile_img_path'] = None
 
-                        if file:
+                        # Update account profile photo 
+                        if file != 'Null':
                             upload_result = cloudinary.upload(
                                 file, format=self.IMG_FORMAT, folder=self.UPLOAD_FOLDER
                             )
@@ -161,12 +157,8 @@ class UserAPIView(views.APIView):
                 data = request.POST.copy()
                 file = request.data.get('file')
                 file_type = getattr(file, 'content_type', None)
-                id_profile_img = data.get('id_profile_img')
-                profile_img_path = data.get('profile_img_path')
-                if id_profile_img or profile_img_path:
-                    return non_modifiable_img_data_response('update')
                 
-                # Check if the request has an image 
+                # Check if the request has an unsupported image type 
                 if file and (file != 'Null') and not(file_type in self.type_images):
                     return unsupported_image_response()
 
@@ -208,8 +200,9 @@ class UserAPIView(views.APIView):
                 account = Accounts.objects.all().filter(id=id_user).first()
 
                 if account:
-                    account.delete()
-                    serializer = UserSerializerV1(account)
+                    serializer = UserSerializerV1(account, {'is_active': False}, partial=True)
+                    serializer.is_valid()
+                    serializer.save()
                     return serializer_data_response(serializer)
                 return user_not_found_response()
             return invalid_version_response()

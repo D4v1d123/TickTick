@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 
+
 # Error responses
 def invalid_version_response():
     return Response(
@@ -12,12 +13,6 @@ def generic_error_response(error):
     return Response(
         {'error': str(error)},
         status=status.HTTP_500_INTERNAL_SERVER_ERROR
-    )
-
-def non_modifiable_img_data_response(action):
-    return Response(
-        {'error': f'Cannot {action} \'id_profile_img\' and \'profile_img_path\''}, 
-        status=status.HTTP_400_BAD_REQUEST
     )
 
 def unsupported_image_response():
@@ -43,11 +38,17 @@ def incorrect_email_response():
         {'detail': 'The \'email\' parameter must have username@domain.extension'},
         status=status.HTTP_400_BAD_REQUEST
     )
-
+    
 def registered_email_response():
     return Response(
         {'error': 'Email is already registered'}, 
         status=status.HTTP_409_CONFLICT
+    )
+    
+def required_field_response(field):
+    return Response(
+        {field: ["This field is required."]}, 
+        status=status.HTTP_400_BAD_REQUEST
     )
 
 
