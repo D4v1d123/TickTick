@@ -1,4 +1,4 @@
-import { emailIsAvailable } from './request-api.js'
+import { usernameIsAvailable } from './request-api.js'
 import { buttons, options, inputs} from './dom-elements.js'
 
 const DOMAIN = '@ticktick.com',
@@ -29,7 +29,7 @@ function assignEmail(optionElement, sessionKeyName, email) {
 async function generateAndLoadEmail(name, optionElement, sessionKeyName, maxAttempts){
     for(let attempts = 0; attempts < maxAttempts; attempts++){
         const email = generateRandomEmail(name)
-        const data = await emailIsAvailable(email)
+        const data = await usernameIsAvailable(email)
     
         if(data.isAvailable){
             assignEmail(optionElement, sessionKeyName, email)

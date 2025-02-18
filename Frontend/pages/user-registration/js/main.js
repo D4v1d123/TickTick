@@ -1,7 +1,7 @@
 import { showWindowWithFade, hideWindowWithFade } from '../../../global/js/utils/window-effects.js'
 import { errorModal } from '../../../global/js/components/modals.js'
 import { spinner } from '../../../global/js/components/loaders.js'
-import { emailIsAvailable, createAccount } from './utils/request-api.js'
+import { usernameIsAvailable, createAccount } from './utils/request-api.js'
 import { emailIsValid, ticktickEmailIsValid } from './utils/email-validator.js'
 import * as utils from './utils/formFlow.js'
 import { 
@@ -130,7 +130,7 @@ buttons.next.addEventListener('click', () => {
         if (!ticktickEmailIsValid(inputs.email.value)) {
             errorMessages.email.textContent = (userLanguage == 'es') ? 'La dirección de email debe tener nombreusuario@ticktick.com' : 'Email address must have username@ticktick.com'
         } else if (!(email in emailOptions)) {
-            emailIsAvailable(email).then(data => {
+            usernameIsAvailable(email).then(data => {
                 if(!(data.isAvailable)){
                     errorMessages.email.textContent = (userLanguage == 'es') ? 'El correo electrónico ya existe' : 'Email already exists'
                 } else {

@@ -1,9 +1,9 @@
 const API_URL = 'https://api-ticktick.onrender.com/api/v1/'
 
-// Check if an email is not registered in the database
-export async function emailIsAvailable(email) {
+// Check if an username is not registered in the database
+export async function usernameIsAvailable(email) {
     const body = { 
-        'email': email 
+        'username': email 
     }
 
     try {
