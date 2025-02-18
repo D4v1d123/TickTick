@@ -33,9 +33,9 @@ def serializer_error_response(serializer):
         status=status.HTTP_400_BAD_REQUEST
     )
 
-def incorrect_email_response():
+def incorrect_username_response():
     return Response(
-        {'detail': 'The \'email\' parameter must have username@domain.extension'},
+        {'detail': 'The \'username\' parameter must have username@domain.extension'},
         status=status.HTTP_400_BAD_REQUEST
     )
     
@@ -59,7 +59,7 @@ def serializer_data_response(serializer):
         status=status.HTTP_200_OK
     )
 
-def email_available_response(availability_status):
+def username_available_response(availability_status):
     return Response(
         {'isAvailable': availability_status}, 
         status=status.HTTP_200_OK

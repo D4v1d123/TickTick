@@ -7,18 +7,18 @@ from .serializer import EmailSerializerV1, UserSerializerV1
 from .services import *
 
 
-class CheckUniqueEmailAPIView(views.APIView):
+class CheckUniqueUsernameAPIView(views.APIView):
     def post(self, request, version):
         try:
             if version == 'v1':
-                email = request.data.get('email')        
-                serializer = EmailSerializerV1(data={'email': email})
+                username = request.data.get('username')        
+                serializer = EmailSerializerV1(data={'email': username})
                 
                 if not serializer.is_valid():
-                    return incorrect_email_response()
+                    return incorrect_username_response()
 
-                email_exists = Accounts.objects.values('email').filter(email=email).exists()
-                return email_available_response(not(email_exists))
+                username_exists = Accounts.objects.values('username').filter(username=username).exists()
+                return username_available_response(not(username_exists))
             return invalid_version_response()
         except Exception as error:
             return generic_error_response(error)
