@@ -4,7 +4,8 @@ from rest_framework import views
 import cloudinary.uploader as cloudinary
 from .models import Accounts
 from .serializer import EmailSerializerV1, UserSerializerV1
-from .services import *
+from .services.responses import *
+from .services.validations import *
 
 
 class CheckUniqueUsernameAPIView(views.APIView):
@@ -84,8 +85,13 @@ class UserAPIView(views.APIView):
                 }
                 
                 serializer = UserSerializerV1(data=user_data)
-
+                
                 if serializer.is_valid():
+                    errors = validate_field_data(request)
+                    
+                    if errors:
+                        return invalid_data_response(errors)
+                    
                     if file:
                         upload_result = cloudinary.upload(
                             file, format=self.IMG_FORMAT, folder=self.UPLOAD_FOLDER
@@ -125,6 +131,11 @@ class UserAPIView(views.APIView):
                     serializer = UserSerializerV1(account, data) 
                     
                     if serializer.is_valid():
+                        errors = validate_field_data(request)
+                    
+                        if errors:
+                            return invalid_data_response(errors)
+                        
                         # Delete registered profile photo from account
                         if account.id_profile_img:
                             cloudinary.destroy(account.id_profile_img)
@@ -166,6 +177,11 @@ class UserAPIView(views.APIView):
                     serializer = UserSerializerV1(account, data, partial=True) 
 
                     if serializer.is_valid():
+                        errors = validate_field_data(request)
+                    
+                        if errors:
+                            return invalid_data_response(errors)
+                        
                         # Delete registered profile photo from account
                         if (file == 'Null') and account.id_profile_img:
                             cloudinary.destroy(account.id_profile_img)

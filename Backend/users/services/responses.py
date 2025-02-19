@@ -50,6 +50,12 @@ def required_field_response(field):
         {field: ["This field is required."]}, 
         status=status.HTTP_400_BAD_REQUEST
     )
+    
+def invalid_data_response(errors):
+    return Response(
+        errors,
+        status=status.HTTP_400_BAD_REQUEST
+    )
 
 
 # Correct responses
