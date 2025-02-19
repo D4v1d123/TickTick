@@ -7,8 +7,12 @@ class UserGroups(models.Model):
 
     
 class Accounts(AbstractUser):
+    username = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     birthdate = models.DateField(null=False)
     gender = models.CharField(max_length=20)
+    email = models.CharField(max_length=50)
     id_profile_img = models.CharField(unique=True, null=True)
     profile_img_path = models.URLField(null=True)
     
