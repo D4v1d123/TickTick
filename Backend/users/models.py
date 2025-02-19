@@ -17,14 +17,9 @@ class Accounts(AbstractUser):
     profile_img_path = models.URLField(null=True)
     
     def save(self, *args, **kwargs):
-        if self.first_name:
-            self.first_name = self.first_name.title()
-        
-        if self.last_name:
-            self.last_name = self.last_name.title()
-            
-        if self.gender:
-            self.gender = self.gender.lower()
+        self.first_name = self.first_name.title().strip()
+        self.last_name = self.last_name.title().strip()
+        self.gender = self.gender.lower().strip()
             
         super().save(*args, **kwargs)
 
