@@ -150,11 +150,14 @@ buttons.next.addEventListener('click', () => {
 
     // Step 6 (password)
     if (formSteps.currentStep == 6 && flowControl.nextClicked == false) {
-        const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9\s]).+$/
+        const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9\s]).+$/,
+              startsEndsWithSpaces = /^\s|\s$/
 
         // Validate password
         if (inputs.password.value.length < 8) {
             errorMessages.password.textContent = (userLanguage == 'es') ? 'La contraseña debe tener al menos ocho dígitos' : 'Password must be at least eight digits long'
+        } else if (startsEndsWithSpaces.test(inputs.password.value)) {
+            errorMessages.password.textContent = (userLanguage == 'es') ? 'La contraseña no puede tener espacios al inicio y final' : 'Password cannot have spaces at the beginning and end'
         } else if (!regex.test(inputs.password.value)) {
             errorMessages.password.textContent = (userLanguage == 'es') ? 'La contraseña debe tener letras, números y símbolos' : 'Password must have letters, numbers and symbols'
         } else {
