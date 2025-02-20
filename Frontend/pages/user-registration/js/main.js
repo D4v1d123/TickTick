@@ -1,8 +1,8 @@
 import { showWindowWithFade, hideWindowWithFade } from '../../../global/js/utils/window-effects.js'
+import { emailIsValid, ticktickEmailIsValid } from './utils/email-validator.js'
+import { usernameIsAvailable, createAccount } from './utils/request-api.js'
 import { errorModal } from '../../../global/js/components/modals.js'
 import { spinner } from '../../../global/js/components/loaders.js'
-import { usernameIsAvailable, createAccount } from './utils/request-api.js'
-import { emailIsValid, ticktickEmailIsValid } from './utils/email-validator.js'
 import * as utils from './utils/formFlow.js'
 import { 
     buttons, 
@@ -26,10 +26,17 @@ window.addEventListener('load', () => {
     utils.assignValuesInForm(performance.navigation.type)
 })
 
-// Enter button
+// Enter key
 document.addEventListener('keydown', (event) => {
     if (event.key == 'Enter'){
         buttons.next.click()
+    }
+})
+
+// Escape key
+document.addEventListener('keydown', (event) => {
+    if (event.key == 'Escape'){
+        buttons.back.click()
     }
 })
 
@@ -292,7 +299,9 @@ buttons.back.addEventListener('click', () => {
     
     // Step 7 (profile picture)
     if (formSteps.currentStep == 7) buttons.next.innerText = 'Next'
-
-    utils.showNextStep(formSteps.currentStep, formSteps.previewStep)
-    utils.showButtons(buttons.back, buttons.signIn, parseInt(sessionStorage.getItem('step')))
+    
+    if (formSteps.previewStep != 0) {
+        utils.showNextStep(formSteps.currentStep, formSteps.previewStep)
+        utils.showButtons(buttons.back, buttons.signIn, parseInt(sessionStorage.getItem('step')))
+    }
 })
