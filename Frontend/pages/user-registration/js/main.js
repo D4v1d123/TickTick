@@ -277,6 +277,7 @@ buttons.next.addEventListener('click', () => {
                             container.insertAdjacentHTML('beforeend', errorModal('errorPopUp', titlePopUp, `${error}`, msgClosePopUp))
                         } 
     
+                        document.querySelector('#errorPopUp > div > div.pop-up-body > p').textContent = error
                         showWindowWithFade(getID('errorPopUp')) // Show popup
     
                         const btnClosePopUp = getID('btn-close-pop-up')
