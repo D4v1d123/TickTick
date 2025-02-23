@@ -15,12 +15,6 @@ def generic_error_response(error):
         status=status.HTTP_500_INTERNAL_SERVER_ERROR
     )
 
-def unsupported_image_response():
-    return Response(
-        {'error': 'Unsupported image format, use \'jpeg\', \'png\', \'webp\', \'svg\', \'heic\' or \'heif\''},
-        status=status.HTTP_400_BAD_REQUEST
-    )
-
 def user_not_found_response():
     return Response(
         {"error": "User not found"}, 

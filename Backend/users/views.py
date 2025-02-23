@@ -31,14 +31,6 @@ class UserAPIView(views.APIView):
     UPLOAD_FOLDER = 'profile_pictures_tick_tick'
     
     User = get_user_model()
-    type_images = [
-        'image/jpeg', 
-        'image/png', 
-        'image/webp', 
-        'image/svg+xml', 
-        'image/heic', 
-        'image/heif'
-    ]
     
     def get(self, request, version, id_user=None):
         try:
@@ -65,15 +57,17 @@ class UserAPIView(views.APIView):
                 accounts = Accounts.objects.all()
                 data = request.POST.copy()
                 file = request.data.get('file')
-                file_type = getattr(file, 'content_type', None)
                 
                 if accounts.filter(username=data.get('username')).exists():
                     return registered_email_response()
+                
+                # Validate image
+                if file:
+                    img_errors = validate_img(file)
 
-                # Check if the request has an unsupported image type 
-                if file and not(file_type in self.type_images):
-                    return unsupported_image_response()
-            
+                    if img_errors:
+                        return invalid_data_response(img_errors)
+
                 user_data = {
                     'username': data.get('username'), 
                     'password': data.get('password'), 
@@ -87,12 +81,12 @@ class UserAPIView(views.APIView):
                 serializer = UserSerializerV1(data=user_data)
                 
                 if serializer.is_valid():
-                    errors = validate_field_data(request)
+                    field_errors = validate_field_data(request)
                     
-                    if errors:
-                        return invalid_data_response(errors)
+                    if field_errors:
+                        return invalid_data_response(field_errors)
                     
-                    if file:
+                    if file and (file != 'Null'):
                         upload_result = cloudinary.upload(
                             file, format=self.IMG_FORMAT, folder=self.UPLOAD_FOLDER
                         )
@@ -115,7 +109,6 @@ class UserAPIView(views.APIView):
                 account = Accounts.objects.all().filter(id=id_user).first()
                 data = request.POST.copy()
                 file = request.data.get('file')
-                file_type = getattr(file, 'content_type', None)
                 
                 if not('is_active' in data):
                     return required_field_response('is_active')
@@ -123,18 +116,21 @@ class UserAPIView(views.APIView):
                 if not(file):
                     return required_field_response('file')
                 
-                # Check if the request has an unsupported image type 
-                if (file != 'Null') and not(file_type in self.type_images):
-                    return unsupported_image_response()
+                # Validate image
+                if file:
+                    img_errors = validate_img(file)
+
+                    if img_errors:
+                        return invalid_data_response(img_errors)
                 
                 if account:
                     serializer = UserSerializerV1(account, data) 
                     
                     if serializer.is_valid():
-                        errors = validate_field_data(request)
+                        field_errors = validate_field_data(request)
                     
-                        if errors:
-                            return invalid_data_response(errors)
+                        if field_errors:
+                            return invalid_data_response(field_errors)
                         
                         # Delete registered profile photo from account
                         if account.id_profile_img:
@@ -167,20 +163,22 @@ class UserAPIView(views.APIView):
                 account = Accounts.objects.all().filter(id=id_user).first()
                 data = request.POST.copy()
                 file = request.data.get('file')
-                file_type = getattr(file, 'content_type', None)
                 
-                # Check if the request has an unsupported image type 
-                if file and (file != 'Null') and not(file_type in self.type_images):
-                    return unsupported_image_response()
+                # Validate image
+                if file:
+                    img_errors = validate_img(file)
+
+                    if img_errors:
+                        return invalid_data_response(img_errors)
 
                 if account:
                     serializer = UserSerializerV1(account, data, partial=True) 
 
                     if serializer.is_valid():
-                        errors = validate_field_data(request)
+                        field_errors = validate_field_data(request)
                     
-                        if errors:
-                            return invalid_data_response(errors)
+                        if field_errors:
+                            return invalid_data_response(field_errors)
                         
                         # Delete registered profile photo from account
                         if (file == 'Null') and account.id_profile_img:

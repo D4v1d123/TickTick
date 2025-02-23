@@ -1,5 +1,8 @@
 import re
 
+from PIL import Image
+
+
 def field_is_safe(value, regex):
     return bool(re.fullmatch(regex, value))
 
@@ -16,7 +19,8 @@ def username_is_valid(email):
     
     return True
 
-# Verify that the content of a request complies with a pre-established structure to avoid XSS attacks
+# Verify that the content of a request complies with a pre-established structure
+# to avoid XSS attacks
 def validate_field_data(request):
     data = request.POST.copy()
     username = data.get('username')
@@ -44,3 +48,36 @@ def validate_field_data(request):
         errors['gender'] = ['This field can only contain uppercase, lowercase letters and hyphens.']
         
     return errors
+
+# Check if the file is an image, does not exceed the established size, and is 
+# within the supported formats
+def validate_img(file):
+    MAX_IMG_SIZE = 10 # Size in MB
+    TYPE_IMAGES = [
+        'image/jpeg', 
+        'image/png', 
+        'image/webp', 
+        'image/svg+xml', 
+        'image/heic', 
+        'image/heif'
+    ]
+    
+    file_type = getattr(file, 'content_type', None)
+    file_size = (len(file) / 1024) / 1024 # Size in MB
+    
+    if (file == 'Null'):
+        return None
+    
+    if not(file_type in TYPE_IMAGES):
+        return {'error': 'Unsupported image format, use \'jpeg\', \'png\', \'webp\', \'svg\', \'heic\' or \'heif\'.'}
+
+    # Verify that a file is not a malicious file disguised as an image
+    try:
+        Image.open(file).verify()
+        file.seek(0) 
+    except Exception as error:
+        print(error)
+        return {'error': 'Invalid image, please upload another image.'}
+    
+    if file_size > MAX_IMG_SIZE:
+        return {'error': f'The image cannot weigh more than {MAX_IMG_SIZE} MB.'}
