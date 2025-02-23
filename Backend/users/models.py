@@ -12,7 +12,7 @@ class Accounts(AbstractUser):
     last_name = models.CharField(max_length=100)
     birthdate = models.DateField(null=False)
     gender = models.CharField(max_length=20)
-    email = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
     id_profile_img = models.CharField(unique=True, null=True)
     profile_img_path = models.URLField(null=True)
     
