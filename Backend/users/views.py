@@ -1,14 +1,18 @@
+from django.utils.decorators import method_decorator
 from django.contrib.auth import get_user_model
-from rest_framework import views
+from rest_framework.views import APIView
 
-import cloudinary.uploader as cloudinary
-from .models import Accounts
 from .serializer import EmailSerializerV1, UserSerializerV1
-from .services.responses import *
+from django_ratelimit.decorators import ratelimit
+import cloudinary.uploader as cloudinary
 from .services.validations import *
+from .services.responses import *
+from .models import Accounts
 
 
-class CheckUniqueUsernameAPIView(views.APIView):
+@method_decorator(ratelimit(key='ip', rate='10/m', block=True), name='dispatch')
+@method_decorator(ratelimit(key='ip', rate='15/d', block=True), name='dispatch')
+class CheckUniqueUsernameAPIView(APIView):
     def post(self, request, version):
         try:
             if version == 'v1':
@@ -25,7 +29,9 @@ class CheckUniqueUsernameAPIView(views.APIView):
             return generic_error_response(error)
 
 
-class UserAPIView(views.APIView):
+@method_decorator(ratelimit(key='ip', rate='10/m', block=True), name='dispatch')
+@method_decorator(ratelimit(key='ip', rate='200/d', block=True), name='dispatch')
+class UserAPIView(APIView):
     # Cloudinary settings
     IMG_FORMAT = 'AVIF'
     UPLOAD_FOLDER = 'profile_pictures_tick_tick'
@@ -50,7 +56,7 @@ class UserAPIView(views.APIView):
             return invalid_version_response()
         except Exception as error:
             return generic_error_response(error)
-        
+    
     def post(self, request, version):
         try:
             if version == 'v1':
@@ -207,7 +213,7 @@ class UserAPIView(views.APIView):
             return invalid_version_response()
         except Exception as error:
             return generic_error_response(error)
-        
+    
     def delete(self, request, version, id_user):
         try:
             if version == 'v1':

@@ -11,6 +11,7 @@ distlib==0.3.9
 dj-database-url==2.3.0
 Django==5.1.5
 django-cors-headers==4.6.0
+django-ratelimit==4.1.0
 djangorestframework==3.15.2
 filelock==3.16.1
 gunicorn==23.0.0
