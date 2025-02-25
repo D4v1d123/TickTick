@@ -170,3 +170,11 @@ cloudinary.config(
     api_secret = config('CLOUDINARY_API_SECRET'),
     secure=True
 )
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': config('REDIS_LOCATION'),
+    }
+}
