@@ -175,6 +175,6 @@ cloudinary.config(
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': config('REDIS_LOCATION'),
+        'LOCATION': config('REDIS_URL'),
     }
 }

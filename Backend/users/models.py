@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.utils.timezone import now
 from django.db import models
 
 
@@ -15,11 +16,13 @@ class Accounts(AbstractUser):
     email = models.EmailField(max_length=50)
     id_profile_img = models.CharField(unique=True, null=True)
     profile_img_path = models.URLField(null=True)
+    update_date = models.DateTimeField(auto_now=True, null=True)
     
     def save(self, *args, **kwargs):
         self.first_name = self.first_name.title().strip()
         self.last_name = self.last_name.title().strip()
         self.gender = self.gender.lower().strip()
+        self.update_date = now()
             
         super().save(*args, **kwargs)
 
