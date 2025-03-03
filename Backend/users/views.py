@@ -12,7 +12,7 @@ from .services.responses import *
 from .models import Accounts
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @ratelimit(key='ip', rate='5/m', block=True)
 @ratelimit(key='ip', rate='100/d', block=True)
 def check_account(request, version):

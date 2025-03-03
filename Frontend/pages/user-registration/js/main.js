@@ -1,6 +1,6 @@
 import { showWindowWithFade, hideWindowWithFade } from '../../../global/js/utils/window-effects.js'
-import { emailIsValid, ticktickEmailIsValid } from './utils/email-validator.js'
 import { usernameIsAvailable, createAccount } from './utils/request-api.js'
+import * as validations from '../../../global/js/utils/validations.js'
 import { errorModal } from '../../../global/js/components/modals.js'
 import { spinner } from '../../../global/js/components/loaders.js'
 import * as utils from './utils/formFlow.js'
@@ -51,8 +51,8 @@ buttons.next.addEventListener('click', () => {
     if (formSteps.currentStep == 1 && flowControl.nextClicked == false) {
         const charactersAllowed = /^[a-zA-Z\s]+$/
 
-        utils.showErrorMessage(inputs.fName, errorMessages.fName, '', charactersAllowed, 'First name can’t be empty', 'El nombre no puede ser vacío')
-        utils.showErrorMessage(inputs.lName, errorMessages.lName, '', charactersAllowed, 'Last name can’t be empty', 'El apellido no puede ser vacío')
+        validations.showErrorMessage(inputs.fName, errorMessages.fName, '', charactersAllowed, 'First name can’t be empty', 'El nombre no puede ser vacío')
+        validations.showErrorMessage(inputs.lName, errorMessages.lName, '', charactersAllowed, 'Last name can’t be empty', 'El apellido no puede ser vacío')
 
         // Continue to the next step if there are no error message
         flowControl.nextClicked = flowControl.error = (errorMessages.fName.textContent !== '' || errorMessages.lName.textContent !== '')
@@ -71,7 +71,7 @@ buttons.next.addEventListener('click', () => {
               message = (userLanguage == 'es') ? 'La fecha de nacimiento no puede ser vacía' : 'Birthdate can’t be empty'
 
         errorMessages.date.textContent = !(dateFormat.test(inputs.birthdate.value)) ? message : ''
-        utils.showErrorMessage(inputs.gender, errorMessages.gender, 'Gender', charactersAllowed, 'Gender can’t be empty', 'El género no puede ser vacío')
+        validations.showErrorMessage(inputs.gender, errorMessages.gender, 'Gender', charactersAllowed, 'Gender can’t be empty', 'El género no puede ser vacío')
 
         // Continue to the next step if there are no error message
         flowControl.nextClicked = flowControl.error = (errorMessages.date.textContent !== '' || errorMessages.gender.textContent !== '')
@@ -84,7 +84,7 @@ buttons.next.addEventListener('click', () => {
     
     // Step 3 (recovery email)
     if (formSteps.currentStep == 3 && flowControl.nextClicked == false) {
-        if (!emailIsValid(inputs.recEmail.value)) {
+        if (!validations.emailIsValid(inputs.recEmail.value)) {
             errorMessages.recEmail.textContent = (userLanguage == 'es') ? 'La dirección de email debe tener nombreusuario@dominio.extensión' : 'Email address must have username@domain.extension'
         } else {
             errorMessages.recEmail.textContent = ''
@@ -134,7 +134,7 @@ buttons.next.addEventListener('click', () => {
                   '': 'emailCustom',
               }
 
-        if (!ticktickEmailIsValid(inputs.email.value)) {
+        if (!validations.ticktickEmailIsValid(inputs.email.value)) {
             errorMessages.email.textContent = (userLanguage == 'es') ? 'La dirección de email debe tener nombreusuario@ticktick.com' : 'Email address must have username@ticktick.com'
         } else if (!(email in emailOptions)) {
             usernameIsAvailable(email).then(data => {

@@ -1,5 +1,5 @@
 import * as h2a from 'https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js'
-import { buttons, inputs, selects, options, formSteps, windows, getID, userLanguage } from './dom-elements.js'
+import { buttons, inputs, selects, options, formSteps, windows, getID } from './dom-elements.js'
 
 export function showNextStep (currentStep, nextStep) {
     windows.current = getID('step-' + currentStep)
@@ -37,19 +37,6 @@ export function showFirstWindow () {
 
     windows.current.classList.remove('fade', 'hidden')
     windows.current.classList.add('visible-effect')
-}
-
-export function showErrorMessage (input, label, value, regex = /[\s\S]/, msgEnglish, msgSpanish) {
-    const message = (userLanguage == 'es') ? msgSpanish : msgEnglish
-
-    if (input.value == value){
-        label.textContent = message
-    } else if (!regex.test(input.value)) {
-        label.textContent = (userLanguage == 'es') ? 'Uso de caracteres inválidos' : 'Use of invalid characters'
-    }else {
-        label.textContent = ''
-
-    }
 }
 
 // Assign values ​​to the form when the page is reloaded

@@ -2,8 +2,8 @@ import * as md from 'https://cdn.jsdelivr.net/npm/mobile-detect@1.4.5/mobile-det
 
 export const userLanguage = (navigator.language || navigator.userLanguage).slice(0, 2),
              device = new MobileDetect(window.navigator.userAgent),
-             getID = document.getElementById.bind(document),
-             getName = document.getElementsByName.bind(document)
+             getName = document.getElementsByName.bind(document),
+             getID = document.getElementById.bind(document)
 
 export const buttons = {
     next: getID('btn-next'),
