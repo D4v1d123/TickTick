@@ -3,16 +3,25 @@ import re
 from PIL import Image
 
 
+def validate_empty_fields(dictFields):
+    errors = {}
+    
+    for field_name, field_value in dictFields.items():
+        if not(field_value):
+            errors[field_name] = ['This field is required.']
+            
+    return errors
+
 def field_is_safe(value, regex):
     return bool(re.fullmatch(regex, value))
 
 def username_is_valid(email):
-    validEmailStructure = r'^(?!.*\.\.)[^\s@]+@ticktick\.com$' # username@domain.extension
-    invalidCharacters = r"[\s,;&=_'\-\[\]+<>≤≥]"
+    valid_email_structure = r'^(?!.*\.\.)[^\s@]+@ticktick\.com$' # username@domain.extension
+    invalid_characters = r"[\s,;&=_'\-\[\]+<>≤≥]"
     starts = r'^[@.]' # Starts with @ or .
     ends = r'[@.]$' # Ends with @ or .
     
-    if not(re.fullmatch(validEmailStructure, email)) or re.findall(invalidCharacters, email):
+    if not(re.fullmatch(valid_email_structure, email)) or re.findall(invalid_characters, email):
         return False
     elif re.match(starts, email) or re.fullmatch(ends, email):
         return False

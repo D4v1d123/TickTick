@@ -5,7 +5,7 @@ from rest_framework.response import Response
 # Error responses
 def invalid_version_response():
     return Response(
-        {'error': 'Invalid version'}, 
+        {'error': 'Invalid version.'}, 
         status=status.HTTP_400_BAD_REQUEST
     )
 
@@ -17,7 +17,7 @@ def generic_error_response(error):
 
 def user_not_found_response():
     return Response(
-        {"error": "User not found"}, 
+        {"error": "User not found."}, 
         status=status.HTTP_404_NOT_FOUND
     )
 
@@ -29,13 +29,13 @@ def serializer_error_response(serializer):
 
 def incorrect_username_response():
     return Response(
-        {'detail': 'The \'username\' parameter must have username@domain.extension'},
+        {'detail': 'The \'username\' parameter must have username@domain.extension.'},
         status=status.HTTP_400_BAD_REQUEST
     )
     
 def registered_email_response():
     return Response(
-        {'error': 'Email is already registered'}, 
+        {'error': 'Email is already registered.'}, 
         status=status.HTTP_409_CONFLICT
     )
     

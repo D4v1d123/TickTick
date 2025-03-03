@@ -1,4 +1,6 @@
+from django.contrib.auth.hashers import check_password
 from django.utils.decorators import method_decorator
+from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 
@@ -9,9 +11,36 @@ from .services.validations import *
 from .services.responses import *
 from .models import Accounts
 
+@api_view(['GET'])
+@ratelimit(key='ip', rate='5/m', block=True)
+@ratelimit(key='ip', rate='100/d', block=True)
+def checkAccount(request, version):
+    try:
+        if version == 'v1':
+            username = request.data.get('username')
+            password = request.data.get('password')
+            fields = {
+                'username': username,
+                'password': password
+            }
+            empty_fields = validate_empty_fields(fields)       
+                
+            if empty_fields:
+                return invalid_data_response(empty_fields)
+            
+            account = Accounts.objects.all().filter(username=username).first()
+            
+            if account:    
+                if check_password(password, account.password):
+                    serializer = UserSerializerV1(account)
+                    return serializer_data_response(serializer)
+            return user_not_found_response()
+    except Exception as error:
+        return generic_error_response(error) 
+
 
 @method_decorator(ratelimit(key='ip', rate='10/m', block=True), name='dispatch')
-@method_decorator(ratelimit(key='ip', rate='15/d', block=True), name='dispatch')
+@method_decorator(ratelimit(key='ip', rate='150/d', block=True), name='dispatch')
 class CheckUniqueUsernameAPIView(APIView):
     def post(self, request, version):
         try:
