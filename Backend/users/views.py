@@ -11,10 +11,11 @@ from .services.validations import *
 from .services.responses import *
 from .models import Accounts
 
+
 @api_view(['GET'])
 @ratelimit(key='ip', rate='5/m', block=True)
 @ratelimit(key='ip', rate='100/d', block=True)
-def checkAccount(request, version):
+def check_account(request, version):
     try:
         if version == 'v1':
             username = request.data.get('username')
@@ -39,23 +40,28 @@ def checkAccount(request, version):
         return generic_error_response(error) 
 
 
-@method_decorator(ratelimit(key='ip', rate='10/m', block=True), name='dispatch')
-@method_decorator(ratelimit(key='ip', rate='150/d', block=True), name='dispatch')
-class CheckUniqueUsernameAPIView(APIView):
-    def post(self, request, version):
-        try:
-            if version == 'v1':
-                username = request.data.get('username')        
-                serializer = EmailSerializerV1(data={'email': username})
+@api_view(['POST'])
+@ratelimit(key='ip', rate='10/m', block=True)
+@ratelimit(key='ip', rate='150/d', block=True)
+def check_unique_username(request, version):
+    try:
+        if version == 'v1':
+            username = request.data.get('username') 
+            empty_fields = validate_empty_fields({'username': username})       
                 
-                if not serializer.is_valid():
-                    return incorrect_username_response()
+            if empty_fields:
+                return invalid_data_response(empty_fields) 
+                
+            serializer = EmailSerializerV1(data={'email': username})
+            
+            if not serializer.is_valid():
+                return incorrect_username_response()
 
-                username_exists = Accounts.objects.values('username').filter(username=username).exists()
-                return username_available_response(not(username_exists))
-            return invalid_version_response()
-        except Exception as error:
-            return generic_error_response(error)
+            username_exists = Accounts.objects.values('username').filter(username=username).exists()
+            return username_available_response(not(username_exists))
+        return invalid_version_response()
+    except Exception as error:
+        return generic_error_response(error)
 
 
 @method_decorator(ratelimit(key='ip', rate='10/m', block=True), name='dispatch')
