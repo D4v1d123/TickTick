@@ -2,6 +2,13 @@ import { buttons, inputs, errorMessages, userLanguage } from './utils/dom-elemen
 import * as validations from '../../../global/js/utils/validations.js'
 import { authenticateUser } from './utils/request-api.js'
 
+// Enter key
+document.addEventListener('keydown', (event) => {
+    if (event.key == 'Enter') {
+        buttons.signIn.click()
+    }
+})
+
 buttons.signIn.addEventListener('click', async () => {
     // Validate fields
     validations.showErrorMessage(inputs.password, errorMessages.password, '', undefined, 'Password can’t be empty', 'La contraseña no puede ser vacía')
