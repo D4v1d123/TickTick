@@ -21,10 +21,16 @@ document.addEventListener('keydown', (event) => {
 
 buttons.signIn.addEventListener('click', async () => {
     buttons.signIn.disabled = true
+    const startsEndsWithSpaces = /^\s|\s$/
 
-    // Validate fields
+    // Validate password
     validations.showErrorMessage(inputs.password, errorMessages.password, '', undefined, 'Password can’t be empty', 'La contraseña no puede ser vacía')
-    
+
+    if (startsEndsWithSpaces.test(inputs.password.value)) {
+        errorMessages.password.textContent = (userLanguage == 'es') ? 'La contraseña no puede tener espacios al inicio y final' : 'Password cannot have spaces at the beginning and end'
+    }    
+
+    // Validate email or username
     if (!validations.ticktickEmailIsValid(inputs.email.value)) {
         errorMessages.email.textContent = (userLanguage == 'es') ? 'La dirección de email debe tener nombreusuario@ticktick.com' : 'Email address must have username@ticktick.com'
     } else {
@@ -36,13 +42,13 @@ buttons.signIn.addEventListener('click', async () => {
     if (!errors) {
         showElement(loaders.signIn)
         const response = await authenticateUser(inputs.email.value, inputs.password.value)
-        
+
         if (response.ok) {
             window.location.replace('../homepage/homepage.html')
+        } else {
+            errorMessages.password.textContent = (userLanguage == 'es') ? 'El correo electrónico o la contraseña son incorrectos' : 'Email or password is incorrect'
+            hideElement(loaders.signIn)
         }
-
-        errorMessages.password.textContent = (userLanguage == 'es') ? 'El correo electrónico o la contraseña son incorrectos' : 'Email or password is incorrect'
-        hideElement(loaders.signIn)
     }
 
     buttons.signIn.disabled = false
