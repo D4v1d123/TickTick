@@ -1,6 +1,16 @@
-import { buttons, inputs, errorMessages, userLanguage } from './utils/dom-elements.js'
+import { buttons, inputs, errorMessages, userLanguage, loaders } from './utils/dom-elements.js'
 import * as validations from '../../../global/js/utils/validations.js'
 import { authenticateUser } from './utils/request-api.js'
+
+function showElement(element) {
+    element.classList.remove('fade', 'hidden')
+    element.classList.add('visible-effect')
+}
+
+function hideElement(element) {
+    element.classList.remove('visible-effect')
+    element.classList.add('fade', 'hidden')
+}
 
 // Enter key
 document.addEventListener('keydown', (event) => {
@@ -10,6 +20,8 @@ document.addEventListener('keydown', (event) => {
 })
 
 buttons.signIn.addEventListener('click', async () => {
+    buttons.signIn.disabled = true
+
     // Validate fields
     validations.showErrorMessage(inputs.password, errorMessages.password, '', undefined, 'Password can’t be empty', 'La contraseña no puede ser vacía')
     
@@ -22,6 +34,7 @@ buttons.signIn.addEventListener('click', async () => {
     // Authenticate user
     const errors = (errorMessages.email.textContent !== '' || errorMessages.password.textContent !== '')
     if (!errors) {
+        showElement(loaders.signIn)
         const response = await authenticateUser(inputs.email.value, inputs.password.value)
         
         if (response.ok) {
@@ -29,5 +42,8 @@ buttons.signIn.addEventListener('click', async () => {
         }
 
         errorMessages.password.textContent = (userLanguage == 'es') ? 'El correo electrónico o la contraseña son incorrectos' : 'Email or password is incorrect'
+        hideElement(loaders.signIn)
     }
+
+    buttons.signIn.disabled = false
 })

@@ -18,3 +18,7 @@ export const errorMessages = {
     email: getID('inc-email'),
     password: getID('inc-password')
 }
+
+export const loaders = {
+    signIn: getID('ldr-sign-in')
+}

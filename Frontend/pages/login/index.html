@@ -9,6 +9,9 @@
     <script type="module" src="./js/main.js" defer></script>
     <script type="module" src="../../global/js/show-password.js" defer></script>
     <script type="module" src="../../global/js/device-detect.js" defer></script>
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <!-- Google fonts (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,23 +36,26 @@
             <div>
                 <div class="input">
                     <div class="center-content">
-                        <input id="inp-email" type="email" placeholder="Email">
+                        <input id="inp-email" type="email" placeholder="Email" style="padding: 2.5% 2.5% 2.5% 6%;">
                     </div>
                     <h3 id="inc-email" class="wrong-message font-bold"></h3>
                     <div class="center-content">
-                        <input id="inp-password" type="password" placeholder="Password">
+                        <input id="inp-password" type="password" placeholder="Password" style="padding: 2.5% 2.5% 2.5% 6%;">
                         <i id="btn-eye" class='bx bxs-show'></i>
                     </div>
                     <h3 id="inc-password" class="wrong-message font-bold"></h3>
                     <a id="btn-forgot-password" class="text-blue left-align font-bold hover" href="#">Forgot password?</a>
                 </div>
 
-                <div class="form-button-content">
-                    <button id="btn-sign-in" class="blue-button font-bold" type="button" >Sign in</button>
+                <div>
+                    <button id="btn-sign-in" class="blue-button font-bold" type="button" style="padding: 1.7%;">
+                        <span id="ldr-sign-in" class="spinner-border spinner-border-sm fade hidden" style="margin-bottom: 0.8%;"></span>
+                        Sign in
+                    </button>
                     
                     <div class="in-line create-account">
                         <h3 id="msg-account" class="font-light">Don’t have an account?</h3>
-                        <a  id="btn-register" class="text-blue font-bold hover" style="margin-left: 0.6vh;" href="../user-registration/create-account.html">Register</a>
+                        <a  id="btn-register" class="text-blue font-bold hover" href="../user-registration/create-account.html" style="margin: -0.2vh 0 0 0.6vh;">Register</a>
                     </div>
                 </div>
             </div>

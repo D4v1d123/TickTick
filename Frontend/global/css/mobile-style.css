@@ -27,7 +27,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 89.8%;
+    width: 100%;
     text-align: center;
     border-radius: var(--border-rounded) var(--border-rounded) 0 0;
 }
@@ -63,7 +63,7 @@
 }
 
 .logo {
-    width: 30%;
+    width: 36%;
     padding: 3%;
     border-radius: 20vh;
 }
@@ -141,7 +141,7 @@
 /* Mobile responsive */
 @media (max-aspect-ratio: 1/1) {
         .container-login {
-            height: 63%;
+            height: 74%;
             padding: 14% 5% 0 5%;
         }
     
@@ -165,7 +165,7 @@
 
 @media (max-aspect-ratio: 9/16) {
         .container-login {
-            height: 65%;
+            height: 73%;
             padding: 14% 5% 0 5%;
         }
     
@@ -189,12 +189,12 @@
 
 @media (max-aspect-ratio: 9/18.5) {
         .container-login {
-            height: 65%;
+            height: 74%; 
             padding: 18% 5% 0 5%;
         }
     
         .input {
-            margin-bottom: 35%;
+            margin-bottom: 30%;
         }
         
         .create-account {
