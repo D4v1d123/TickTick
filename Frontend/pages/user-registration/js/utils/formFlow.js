@@ -1,15 +1,15 @@
-import * as h2a from 'https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js'
 import { buttons, inputs, selects, options, formSteps, windows, getID } from './dom-elements.js'
+import * as h2a from 'https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js'
 
 export function showNextStep (currentStep, nextStep) {
     windows.current = getID('step-' + currentStep)
     windows.next = getID('step-' + nextStep)
 
     windows.current.classList.remove('visible-effect')
-    windows.current.classList.add('fade')
+    windows.current.classList.add('custom-fade')
 
     setTimeout(() => {
-        windows.next.classList.remove('fade', 'hidden')
+        windows.next.classList.remove('custom-fade', 'hidden')
         windows.next.classList.add('visible-effect')
         windows.current.classList.add('hidden')
     }, 400)
@@ -35,7 +35,7 @@ export function showFirstWindow () {
         sessionStorage.setItem('step', 1)
     }
 
-    windows.current.classList.remove('fade', 'hidden')
+    windows.current.classList.remove('custom-fade', 'hidden')
     windows.current.classList.add('visible-effect')
 }
 

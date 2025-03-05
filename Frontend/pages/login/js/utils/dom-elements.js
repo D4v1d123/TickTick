@@ -22,3 +22,12 @@ export const errorMessages = {
 export const loaders = {
     signIn: getID('ldr-sign-in')
 }
+
+export const modals = {
+    tryAgain: {
+        modal: getID('mdl-try-again'),
+        title: getID('mdl-title'),
+        description: getID('mdl-description'),
+        closeBtn: getID('btn-mdl-close')
+    }
+}

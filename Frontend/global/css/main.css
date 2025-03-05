@@ -150,7 +150,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
     align-items: center;
 }
 
-.fade {
+.custom-fade {
     opacity: 0;
     transition: opacity 0.3s ease;
     height: 0;
@@ -176,6 +176,12 @@ input[type='date']::-webkit-calendar-picker-indicator {
     margin-bottom: 1.5vh;
     text-align: left;
     color: var(--red);
+}
+
+.modal-header {
+    background-color: var(--red);
+    border-color: var(--red);
+    color: white;
 }
 
 .pop-up-content {
@@ -276,6 +282,14 @@ input[type='date']::-webkit-calendar-picker-indicator {
         filter: brightness(1.5);
     }
 
+    .modal-content {
+        background-color: white;
+    }
+
+    .modal-footer {
+        border-color: white;
+    }
+
     .pop-up-content {
         background-color: white;
         color: var(--font-color-light);
@@ -302,6 +316,14 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
     .trash-icon-container:hover {
         background-color: rgba(38, 38, 38, 1); 
+    }
+
+    .modal-content {
+        background-color: var(--dark);
+    }
+
+    .modal-footer {
+        border-color: var(--dark);
     }
 
     .pop-up-content {

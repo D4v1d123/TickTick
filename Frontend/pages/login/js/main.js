@@ -1,4 +1,5 @@
-import { buttons, inputs, errorMessages, userLanguage, loaders } from './utils/dom-elements.js'
+import { buttons, inputs, errorMessages, userLanguage, loaders, modals } from './utils/dom-elements.js'
+import * as bt from 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'
 import * as validations from '../../../global/js/utils/validations.js'
 import { authenticateUser } from './utils/request-api.js'
 
@@ -45,10 +46,18 @@ buttons.signIn.addEventListener('click', async () => {
 
         if (response.ok) {
             window.location.replace('../homepage/homepage.html')
+        } else if (response.status == 403) {
+            const tryAgainModal = new bootstrap.Modal(modals.tryAgain.modal)
+            modals.tryAgain.title.textContent = (userLanguage == 'es') ? 'Límite de intentos alcanzado' : 'Attempts limit reached'
+            modals.tryAgain.description.textContent = (userLanguage == 'es') ? 'Se ha alcanzado el número máximo de intentos. Por favor intenta más tarde.' : 'Maximum number of attempts has been reached. Please try again later.'
+            modals.tryAgain.closeBtn.textContent = (userLanguage == 'es') ? 'Cerrar' : 'Close'
+            
+            tryAgainModal.show()
         } else {
             errorMessages.password.textContent = (userLanguage == 'es') ? 'El correo electrónico o la contraseña son incorrectos' : 'Email or password is incorrect'
-            hideElement(loaders.signIn)
         }
+
+        hideElement(loaders.signIn)
     }
 
     buttons.signIn.disabled = false

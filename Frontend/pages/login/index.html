@@ -11,7 +11,7 @@
     <script type="module" src="../../global/js/device-detect.js" defer></script>
     
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
     <!-- Google fonts (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +49,7 @@
 
                 <section>
                     <button id="btn-sign-in" class="blue-button font-bold" type="button" style="padding: 1.7%;">
-                        <span id="ldr-sign-in" class="spinner-border spinner-border-sm fade hidden" style="margin-bottom: 0.8%;"></span>
+                        <span id="ldr-sign-in" class="spinner-border spinner-border-sm fade hidden" style="margin-bottom: 0.2%;"></span>
                         Sign in
                     </button>
                     
@@ -60,6 +60,24 @@
                 </section>
             </section>
         </form>
+
+        <!-- Modal -->
+        <div id="mdl-try-again" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 id="mdl-title" class="modal-title fs-5"></h1>
+                    </div>
+                    <div id="mdl-description" class="modal-body" style="text-align: start;"></div>
+                    <div class="modal-footer">
+                        <button id="btn-mdl-close" class="btn btn-primary" type="button" data-bs-dismiss="modal"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </main>
 </body>
 </html>
