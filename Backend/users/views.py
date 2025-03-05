@@ -9,14 +9,22 @@ from django_ratelimit.decorators import ratelimit
 import cloudinary.uploader as cloudinary
 from .services.validations import *
 from .services.responses import *
+from .services.utils import *
 from .models import Accounts
+from redis import Redis
 
+
+redis_db = Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 @api_view(['POST'])
-@ratelimit(key='ip', rate='5/m', block=True)
 @ratelimit(key='ip', rate='100/d', block=True)
 def check_account(request, version):
     try:
+        ip = request.META.get('REMOTE_ADDR')
+        
+        if response := request_delay(ip, redis_db):
+            return response 
+        
         if version == 'v1':
             username = request.data.get('username')
             password = request.data.get('password')

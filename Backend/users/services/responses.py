@@ -50,6 +50,12 @@ def invalid_data_response(errors):
         errors,
         status=status.HTTP_400_BAD_REQUEST
     )
+    
+def deny_access_response():
+    return Response(
+        {'detail': 'You do not have permission to perform this action.'}, 
+        status=status.HTTP_403_FORBIDDEN
+    )
 
 
 # Correct responses
