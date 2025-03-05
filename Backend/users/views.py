@@ -11,13 +11,19 @@ from .services.validations import *
 from .services.responses import *
 from .services.utils import *
 from .models import Accounts
+from decouple import config
 from redis import Redis
 
 
-redis_db = Redis(host='localhost', port=6379, db=0, decode_responses=True)
+redis_db = Redis(
+    host=config('REDIS_HOST'), 
+    port=config('REDIS_PORT'), 
+    db=config('REDIS_DB'), 
+    decode_responses=True
+)
 
 @api_view(['POST'])
-@ratelimit(key='ip', rate='100/d', block=True)
+# @ratelimit(key='ip', rate='100/d', block=True)
 def check_account(request, version):
     try:
         ip = request.META.get('REMOTE_ADDR')
