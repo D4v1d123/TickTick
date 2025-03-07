@@ -7,7 +7,7 @@ export async function authenticateUser(username, password) {
     }
 
     try {
-        const response = await fetch(`${API_URL}users/is-registered/`, {
+        const response = await fetch(`${API_URL}users/login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

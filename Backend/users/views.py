@@ -24,7 +24,7 @@ redis_db = Redis(
 
 @api_view(['POST'])
 @ratelimit(key='ip', rate='100/d', block=True)
-def check_account(request, version):
+def login(request, version):
     try:
         ip = request.META.get('REMOTE_ADDR')
         
