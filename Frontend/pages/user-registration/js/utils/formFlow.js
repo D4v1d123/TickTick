@@ -1,5 +1,5 @@
-import { buttons, inputs, selects, options, formSteps, windows, getID } from './dom-elements.js'
-import * as h2a from 'https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js'
+import 'https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js'
+import { buttons, formSteps, getID, inputs, options, selects, windows } from './dom-elements.js'
 
 export function showNextStep (currentStep, nextStep) {
     windows.current = getID('step-' + currentStep)
@@ -39,7 +39,7 @@ export function showFirstWindow () {
     windows.current.classList.add('visible-effect')
 }
 
-// Assign values ​​to the form when the page is reloaded
+// Assign values to the form when the page is reloaded
 export function assignValuesInForm(navigationType) {
     if (navigationType === performance.navigation.TYPE_RELOAD) {
         inputs.fName.value = sessionStorage.getItem('firstName')
@@ -71,7 +71,7 @@ export async function convertHeicToJpeg(file) {
     try {
         const fileConverted = await heic2any({blob: file, toType: 'image/jpeg'})
         return URL.createObjectURL(fileConverted)
-    } catch (error) {
+    } catch {
         return null
     }
 }

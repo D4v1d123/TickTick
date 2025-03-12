@@ -1,6 +1,6 @@
-import { buttons, inputs, errorMessages, userLanguage, loaders, modals } from './utils/dom-elements.js'
-import * as bt from 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'
+import 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'
 import * as validations from '../../../global/js/utils/validations.js'
+import { buttons, errorMessages, inputs, loaders, modals, userLanguage } from './utils/dom-elements.js'
 import { authenticateUser } from './utils/request-api.js'
 
 function showElement(element) {
@@ -29,7 +29,7 @@ buttons.signIn.addEventListener('click', async () => {
 
     if (startsEndsWithSpaces.test(inputs.password.value)) {
         errorMessages.password.textContent = (userLanguage == 'es') ? 'La contraseña no puede tener espacios al inicio y final' : 'Password cannot have spaces at the beginning and end'
-    }    
+    }
 
     // Validate email or username
     if (!validations.ticktickEmailIsValid(inputs.email.value)) {
@@ -51,7 +51,7 @@ buttons.signIn.addEventListener('click', async () => {
             modals.tryAgain.title.textContent = (userLanguage == 'es') ? 'Límite de intentos alcanzado' : 'Attempts limit reached'
             modals.tryAgain.description.textContent = (userLanguage == 'es') ? 'Se ha alcanzado el número máximo de intentos. Por favor intenta más tarde.' : 'Maximum number of attempts has been reached. Please try again later.'
             modals.tryAgain.closeBtn.textContent = (userLanguage == 'es') ? 'Cerrar' : 'Close'
-            
+
             tryAgainModal.show()
         } else {
             errorMessages.password.textContent = (userLanguage == 'es') ? 'El correo electrónico o la contraseña son incorrectos' : 'Email or password is incorrect'

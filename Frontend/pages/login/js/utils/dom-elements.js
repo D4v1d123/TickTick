@@ -1,4 +1,5 @@
-import * as md from 'https://cdn.jsdelivr.net/npm/mobile-detect@1.4.5/mobile-detect.min.js'
+import 'https://cdn.jsdelivr.net/npm/mobile-detect@1.4.5/mobile-detect.min.js'
+
 
 export const userLanguage = (navigator.language || navigator.userLanguage).slice(0, 2),
              device = new MobileDetect(window.navigator.userAgent),

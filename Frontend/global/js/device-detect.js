@@ -1,4 +1,4 @@
-import * as md from 'https://cdn.jsdelivr.net/npm/mobile-detect@1.4.5/mobile-detect.min.js'
+import 'https://cdn.jsdelivr.net/npm/mobile-detect@1.4.5/mobile-detect.min.js'
 
 const getID = document.getElementById.bind(document),
       getName = document.getElementsByName.bind(document),
@@ -21,7 +21,7 @@ function deleteCSS(href) {
         const link = getSelector('link[rel="stylesheet"][href="'+href+'"]')
 
         link.remove()
-    } catch (error) {}
+    } catch {}
 }
 
 function loadCSSMobile() {

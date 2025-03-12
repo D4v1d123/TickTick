@@ -1,11 +1,12 @@
 :root {
     --border-rounded: 2.3vw;
-    --border-width: 0.9vw; 
+    --border-width: 0.9vw;
     --text-size: 2.2vh;
-    --title-size: 3.2vh;  
+    --title-size: 3.2vh;
 }
 
-.input input, select {
+.input input,
+select {
     display: block;
     margin-bottom: 1.5vh;
     padding: 3% 3% 3% 6%;
@@ -13,13 +14,13 @@
     border-style: solid;
     border-width: 0.05vw;
     border-radius: var(--border-rounded);
-    box-sizing: border-box; 
+    box-sizing: border-box;
     font-size: var(--text-size);
 }
 
 .trash-icon-container img {
-    width: 3.5vw; 
-    margin: auto; 
+    width: 3.5vw;
+    margin: auto;
     align-items: center;
 }
 
@@ -69,7 +70,7 @@
 }
 
 .profile-picture {
-    position: relative; 
+    position: relative;
     overflow: hidden;
     background-image: url(../../pages/user-registration/assets/icons/profile.svg);
     background-size: cover;
@@ -78,11 +79,11 @@
     border-radius: 10rem;
 }
 
-.center-content > i {
+.center-content>i {
     position: absolute;
     padding: 3%;
     margin-bottom: 2.3vh;
-    transform: translateX(79vw); 
+    transform: translateX(79vw);
 }
 
 .center-in-screen {
@@ -98,7 +99,9 @@
 
 /* Light mode */
 @media (prefers-color-scheme: light) {
-    input, select {
+
+    input,
+    select {
         background-color: var(--gray-light);
         border-color: white;
         color: black;
@@ -119,7 +122,9 @@
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-    input, select {
+
+    input,
+    select {
         background-color: var(--dark);
         border-color: #dee2e6;
         color: white;
@@ -140,73 +145,73 @@
 
 /* Mobile responsive */
 @media (max-aspect-ratio: 1/1) {
-        .container-login {
-            height: 74%;
-            padding: 14% 5% 0 5%;
-        }
-    
-        .input {
-            margin-bottom: 18%;
-        }
-        
-        .create-account {
-            margin-top: 18%;
-        }
+    .container-login {
+        height: 74%;
+        padding: 14% 5% 0 5%;
+    }
 
-        .profile-picture {
-            width: 19vh; 
-            height: 19vh;
-        }
+    .input {
+        margin-bottom: 18%;
+    }
 
-        .trash-icon-container img {
-            width: 2.3vw; 
-        }
+    .create-account {
+        margin-top: 18%;
+    }
+
+    .profile-picture {
+        width: 19vh;
+        height: 19vh;
+    }
+
+    .trash-icon-container img {
+        width: 2.3vw;
+    }
 }
 
 @media (max-aspect-ratio: 9/16) {
-        .container-login {
-            height: 73%;
-            padding: 14% 5% 0 5%;
-        }
-    
-        .input {
-            margin-bottom: 25%;
-        }
-        
-        .create-account {
-            margin-top: 25%;
-        }
+    .container-login {
+        height: 73%;
+        padding: 14% 5% 0 5%;
+    }
 
-        .profile-picture {
-            width: 16vh; 
-            height: 16vh;
-        }
+    .input {
+        margin-bottom: 25%;
+    }
 
-        .trash-icon-container img {
-            width: 3.5vw; 
-        }
+    .create-account {
+        margin-top: 25%;
+    }
+
+    .profile-picture {
+        width: 16vh;
+        height: 16vh;
+    }
+
+    .trash-icon-container img {
+        width: 3.5vw;
+    }
 }
 
 @media (max-aspect-ratio: 9/18.5) {
-        .container-login {
-            height: 74%; 
-            padding: 18% 5% 0 5%;
-        }
-    
-        .input {
-            margin-bottom: 30%;
-        }
-        
-        .create-account {
-            margin-top: 30%;
-        }
+    .container-login {
+        height: 74%;
+        padding: 18% 5% 0 5%;
+    }
 
-        .profile-picture {
-            width: 15vh; 
-            height: 15vh;
-        }
+    .input {
+        margin-bottom: 30%;
+    }
 
-        .trash-icon-container img {
-            width: 3.5vw; 
-        }
+    .create-account {
+        margin-top: 30%;
+    }
+
+    .profile-picture {
+        width: 15vh;
+        height: 15vh;
+    }
+
+    .trash-icon-container img {
+        width: 3.5vw;
+    }
 }

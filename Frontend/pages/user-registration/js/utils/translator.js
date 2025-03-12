@@ -1,4 +1,4 @@
-import { userLanguage, getID } from './dom-elements.js'
+import { getID, userLanguage } from './dom-elements.js'
 
 // Spanish
 if (userLanguage == 'es') {
