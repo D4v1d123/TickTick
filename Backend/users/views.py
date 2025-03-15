@@ -20,7 +20,6 @@ from .services.responses import (
     invalid_data_response,
     invalid_version_response,
     registered_email_response,
-    required_field_response,
     serializer_data_response,
     serializer_error_response,
     user_not_found_response,
@@ -188,60 +187,6 @@ class UserAPIView(APIView):
                     user = self.User.objects.create_user(**user_data)
                     return serializer_data_response(UserSerializerV1(user))
                 return serializer_error_response(serializer)
-            return invalid_version_response()
-        except Exception as error:
-            return generic_error_response(error)
-
-    def put(self, request, version, id_user):
-        try:
-            if version == "v1":
-                account = Accounts.objects.all().filter(id=id_user).first()
-                data = request.POST.copy()
-                file = request.data.get("file")
-
-                if not ("is_active" in data):
-                    return required_field_response("is_active")
-
-                if not (file):
-                    return required_field_response("file")
-
-                # Validate image
-                if file:
-                    img_errors = validate_img(file)
-
-                    if img_errors:
-                        return invalid_data_response(img_errors)
-
-                if account:
-                    serializer = UserSerializerV1(account, data)
-
-                    if serializer.is_valid():
-                        field_errors = validate_field_data(request)
-
-                        if field_errors:
-                            return invalid_data_response(field_errors)
-
-                        # Delete registered profile photo from account
-                        if account.id_profile_img:
-                            cloudinary.destroy(account.id_profile_img)
-                            data["id_profile_img"] = None
-                            data["profile_img_path"] = None
-
-                        # Update account profile photo
-                        if file != "Null":
-                            upload_result = cloudinary.upload(
-                                file, format=self.IMG_FORMAT, folder=self.UPLOAD_FOLDER
-                            )
-                            data["id_profile_img"] = upload_result["public_id"]
-                            data["profile_img_path"] = upload_result["secure_url"]
-
-                        # Update serializer with image upload data
-                        serializer = UserSerializerV1(account, data)
-                        serializer.is_valid()
-                        serializer.save()
-                        return serializer_data_response(serializer)
-                    return serializer_error_response(serializer)
-                return user_not_found_response()
             return invalid_version_response()
         except Exception as error:
             return generic_error_response(error)
