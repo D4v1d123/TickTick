@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import cloudinary.uploader as cloudinary
 from decouple import config
 from django.contrib.auth import get_user_model
@@ -5,7 +7,9 @@ from django.contrib.auth.hashers import check_password
 from django.utils.decorators import method_decorator
 from django_ratelimit.decorators import ratelimit
 from redis import Redis
+from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Accounts
@@ -22,7 +26,7 @@ from .services.responses import (
     user_not_found_response,
     username_available_response,
 )
-from .services.utils import request_delay
+from .services.utils import generate_tokens, request_delay
 from .services.validations import (
     validate_empty_fields,
     validate_field_data,
@@ -59,8 +63,22 @@ def login(request, version):
 
             if account:
                 if check_password(password, account.password):
-                    serializer = UserSerializerV1(account)
-                    return serializer_data_response(serializer)
+                    refresh, access = generate_tokens(account)
+
+                    response = Response(
+                        status=status.HTTP_200_OK,
+                    )
+
+                    response.set_cookie(
+                        key="access_token",
+                        value=access,
+                        httponly=True,
+                        secure=config("DJANGO_ENV") == "production",
+                        samesite="Strict",
+                        max_age=timedelta(minutes=5),
+                    )
+
+                    return response
             return user_not_found_response()
     except Exception as error:
         return generic_error_response(error)

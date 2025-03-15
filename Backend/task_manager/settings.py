@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 import cloudinary
@@ -62,7 +63,8 @@ MIDDLEWARE = [
 ]
 
 ALLOWED_ORIGINS = config(
-    "ALLOWED_ORIGINS", cast=lambda hosts: [host.strip() for host in hosts.split(",")]
+    "DJANGO_ALLOWED_ORIGINS",
+    cast=lambda hosts: [host.strip() for host in hosts.split(",")],
 )
 CORS_ALLOWED_ORIGINS = ALLOWED_ORIGINS
 
@@ -105,6 +107,9 @@ DATABASES = {
 
 # Django Rest Framework settings
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication"
+    ],
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
     "DEFAULT_VERSION": "v1",
     "ALLOWED_VERSIONS": ["v1"],
@@ -116,7 +121,9 @@ REST_FRAMEWORK = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -137,6 +144,30 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ALGORITHM": "HS384",
+    "SIGNING_KEY": config("JWT_SECRET_KEY"),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "USER_AUTHENTICATION_RULE": (
+        "rest_framework_simplejwt.authentication.default_user_authentication_rule"
+    ),
+    "TOKEN_OBTAIN_SERIALIZER": (
+        "rest_framework_simplejwt.serializers.TokenObtainPairSerializer"
+    ),
+    "TOKEN_REFRESH_SERIALIZER": (
+        "rest_framework_simplejwt.serializers.TokenRefreshSerializer"
+    ),
+    "TOKEN_VERIFY_SERIALIZER": (
+        "rest_framework_simplejwt.serializers.TokenVerifySerializer"
+    ),
+}
 
 
 # Internationalization

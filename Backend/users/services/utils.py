@@ -1,5 +1,7 @@
 from time import sleep
 
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from .responses import deny_access_response
 
 
@@ -15,3 +17,12 @@ def request_delay(ip, redis_db):
 
     sleep(attempts * 1.5)
     redis_db.setex(f"failed_attempts: {ip}", EXPIRY_ATTEMPTS, attempts + 1)
+
+
+def generate_tokens(user):
+    refresh_token = RefreshToken.for_user(user)
+    access_token = refresh_token.access_token
+
+    # Here you can add custom claims or attributes
+
+    return (refresh_token, access_token)
