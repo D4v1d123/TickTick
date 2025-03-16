@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework_simplejwt.token_blacklist",
     "rest_framework",
     "corsheaders",
     "users",
@@ -150,6 +151,8 @@ PASSWORD_HASHERS = [
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "ALGORITHM": "HS384",
     "SIGNING_KEY": config("JWT_SECRET_KEY"),
     "AUTH_HEADER_TYPES": ("Bearer",),
@@ -168,6 +171,9 @@ SIMPLE_JWT = {
     ),
     "TOKEN_VERIFY_SERIALIZER": (
         "rest_framework_simplejwt.serializers.TokenVerifySerializer"
+    ),
+    "TOKEN_BLACKLIST_SERIALIZER": (
+        "rest_framework_simplejwt.serializers.TokenBlacklistSerializer"
     ),
 }
 

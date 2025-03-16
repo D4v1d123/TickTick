@@ -58,6 +58,7 @@ def login(request, version):
             if empty_fields:
                 return invalid_data_response(empty_fields)
 
+            # Generate token
             account = Accounts.objects.all().filter(username=username).first()
 
             if account:
@@ -75,6 +76,15 @@ def login(request, version):
                         secure=config("DJANGO_ENV") == "production",
                         samesite="Strict",
                         max_age=timedelta(minutes=5),
+                    )
+
+                    response.set_cookie(
+                        key="refresh_token",
+                        value=refresh,
+                        httponly=True,
+                        secure=config("DJANGO_ENV") == "production",
+                        samesite="Strict",
+                        max_age=timedelta(days=7),
                     )
 
                     return response
