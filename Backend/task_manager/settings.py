@@ -62,6 +62,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
 ALLOWED_ORIGINS = config(
     "DJANGO_ALLOWED_ORIGINS",
     cast=lambda hosts: [host.strip() for host in hosts.split(",")],

@@ -84,6 +84,23 @@ def login(request, version):
 
 
 @api_view(["POST"])
+@ratelimit(key="ip", rate="5/m", block=True)
+@ratelimit(key="ip", rate="50/d", block=True)
+def logout(request, version):
+    try:
+        if version == "v1":
+            response = Response(
+                {"message": "Session successfully closed"}, status=status.HTTP_200_OK
+            )
+            response.delete_cookie("access_token")
+            response.delete_cookie("refresh_token")
+
+            return response
+    except Exception as error:
+        return generic_error_response(error)
+
+
+@api_view(["POST"])
 @ratelimit(key="ip", rate="10/m", block=True)
 @ratelimit(key="ip", rate="150/d", block=True)
 def check_unique_username(request, version):
