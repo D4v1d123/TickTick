@@ -1,4 +1,4 @@
-const API_URL = 'https://api-ticktick.onrender.com/api/v1/'
+const API_URL = 'https://ticktick-mbsv.onrender.com/api/v1/'
 
 export async function authenticateUser(username, password) {
     const body = { 
