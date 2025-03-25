@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 task_manager.wsgi:application"]
+CMD ["sh", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && gunicorn --bind 0.0.0.0:8000 task_manager.wsgi:application"]
