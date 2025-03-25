@@ -1,0 +1,51 @@
+services:
+  api:
+    container_name: api
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app
+    environment:
+      - POSTGRESQL_HOST=${POSTGRESQL_HOST}
+      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
+      - POSTGRESQL_USER=${POSTGRESQL_USER}
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_DB=${POSTGRESQL_DB}
+      - DJANGO_ENV=${DJANGO_ENV}
+      - DJANGO_ALLOWED_ORIGINS=${DJANGO_ALLOWED_ORIGINS}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DB=${REDIS_DB}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    restart: unless-stopped
+  db:
+    image: postgres:17.4-alpine3.21
+    container_name: db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/pgsql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRES_DB=${POSTGRESQL_DB}
+    restart: unless-stopped
+  redis:
+    image: redis:7.4.2-alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/var/lib/redis/
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  redis_data:
+
+

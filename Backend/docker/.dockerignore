@@ -1,0 +1,22 @@
+# System files
+.DS_Store
+Desktop.ini
+Thumbs.db
+
+# Virtual environment
+venv/
+
+# Environment variables
+.env
+
+# Django
+__pycache__
+db.sqlite3
+setup.cfg
+build.sh
+
+# Visual Studio Code
+.vscode/
+
+# Docker
+docker
